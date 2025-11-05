@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  indiastock:
+    build:
+      context: /home/sd22750/indiastock
+      dockerfile: Dockerfile
+    image: indiastock
+    container_name: indiastock
+    restart: always
+    volumes:
+      - /home/sd22750/indiastock:/app
+    environment:
+      - TZ=Asia/Kolkata
+    networks:
+      - traefik_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.indiastock.rule=Host(`sd-ai.co.uk`) && PathPrefix(`/indiastock`)"
+      - "traefik.http.routers.indiastock.entrypoints=websecure"
+      - "traefik.http.routers.indiastock.tls.certresolver=letsencrypt"
+      - "traefik.http.services.indiastock.loadbalancer.server.port=8060"
+
+# Service is configured to be routed via Traefik on the traefik_network.
+# Traefik will serve the dashboard at sd-ai.co.uk/indiastock (PathPrefix).
+
+networks:
+  traefik_network:
+    external: true
