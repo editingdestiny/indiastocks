@@ -5,6 +5,9 @@ import pandas as pd
 from dash.dependencies import Input, Output
 from pathlib import Path
 import logging
+import time
+import predictive_analysis as pred
+import lstm_model
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -64,16 +67,24 @@ app.index_string = '''
 </html>
 '''
 
-# Global variable to store the data
+# Global variable to store the data with timestamp
 cached_df = None
 stock_list = []
+cache_timestamp = None
+CACHE_TIMEOUT = 14400  # 4 hours in seconds
 
 def load_data():
     """Load stock data from nse_all_10y.csv with multi-index columns."""
-    global cached_df, stock_list
+    global cached_df, stock_list, cache_timestamp
     
-    if cached_df is not None:
-        return cached_df, stock_list
+    # Check if cache is still valid (within 1 hour)
+    import time
+    current_time = time.time()
+    if cached_df is not None and cache_timestamp is not None:
+        if current_time - cache_timestamp < CACHE_TIMEOUT:
+            return cached_df, stock_list
+        else:
+            logger.info("Cache expired, reloading data...")
     
     logger.info("=== Loading stock data ===")
     file_path = "/app/nse_all_10y.csv"
@@ -94,6 +105,8 @@ def load_data():
         logger.info(f"First 10 stocks: {stock_list[:10]}")
         
         cached_df = (df, dates)
+        cache_timestamp = current_time
+        logger.info(f"Cache will expire at: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(cache_timestamp + CACHE_TIMEOUT))}")
         return cached_df, stock_list
         
     except Exception as e:
@@ -201,7 +214,7 @@ app.layout = html.Div([
             ),
         ], style={'width': '55%'}, className='mobile-full-width'),
         
-        html.Div([
+        html.Div(id='timeframe-container', children=[
             html.Label("Select Timeframe:", style={
                 'fontWeight': '600', 
                 'fontSize': 'clamp(12px, 3vw, 16px)',
@@ -296,8 +309,21 @@ app.layout = html.Div([
         'marginBottom': '0'
     }),
     
-    # Tab content
-    html.Div(id='tabs-content'),
+    # Tab content with loading spinner positioned near tabs
+    dcc.Loading(
+        id="loading-tab-content",
+        type="circle",
+        color="#667eea",
+        style={'minHeight': '200px'},
+        parent_style={
+            'display': 'flex',
+            'justifyContent': 'center',
+            'alignItems': 'flex-start',
+            'paddingTop': '50px',
+            'minHeight': '300px'
+        },
+        children=html.Div(id='tabs-content', style={'width': '100%'})
+    ),
     
     # Footer
     html.Div([
@@ -629,60 +655,449 @@ def render_tab_content(tab, selected_stock, timeframe):
         ])
     
     elif tab == 'tab-prediction':
-        return html.Div([
-            html.Div([
-                html.Div("🔮", style={'fontSize': '60px', 'textAlign': 'center', 'marginBottom': '20px'}),
-                html.H3("Predictive Analysis", style={
-                    'textAlign': 'center', 
-                    'marginBottom': '15px', 
-                    'fontSize': 'clamp(18px, 4vw, 26px)', 
-                    'color': '#667eea',
-                    'fontWeight': '700'
-                }),
-                html.P("Predictive analysis features coming soon...", style={
-                    'textAlign': 'center', 
-                    'fontSize': 'clamp(14px, 3vw, 18px)', 
-                    'color': '#718096',
-                    'marginBottom': '30px'
-                }),
+        # Get the data for the selected stock
+        if not selected_stock:
+            return html.Div([
                 html.Div([
-                    html.P("This section will include:", style={
-                        'fontWeight': '600', 
-                        'fontSize': 'clamp(14px, 3vw, 16px)',
-                        'color': '#4a5568',
-                        'marginBottom': '15px'
+                    html.Div("🔮", style={'fontSize': '60px', 'textAlign': 'center', 'marginBottom': '20px'}),
+                    html.H3("Predictive Analysis", style={
+                        'textAlign': 'center', 
+                        'marginBottom': '15px', 
+                        'fontSize': 'clamp(18px, 4vw, 26px)', 
+                        'color': '#667eea',
+                        'fontWeight': '700'
                     }),
+                    html.P("Please select a stock to view predictive analysis", style={
+                        'textAlign': 'center', 
+                        'fontSize': 'clamp(14px, 3vw, 18px)', 
+                        'color': '#718096',
+                        'marginBottom': '30px'
+                    })
+                ], style={
+                    'maxWidth': '900px', 
+                    'marginLeft': 'auto', 
+                    'marginRight': 'auto',
+                    'margin': '40px auto',
+                    'padding': '50px 40px',
+                    'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                    'borderRadius': '15px',
+                    'boxShadow': '0 10px 30px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1)',
+                    'border': '1px solid rgba(102, 126, 234, 0.15)'
+                })
+            ])
+        
+        # Get stock data
+        stock_df = get_stock_data(selected_stock)
+        if stock_df is None or stock_df.empty:
+            return html.Div("No data available for this stock")
+        
+        # Apply timeframe filter
+        if timeframe != 'ALL':
+            stock_df_filtered = stock_df.copy()
+            latest_date = stock_df['Date'].max()
+            if timeframe == '1M':
+                start_date = latest_date - pd.DateOffset(months=1)
+            elif timeframe == '3M':
+                start_date = latest_date - pd.DateOffset(months=3)
+            elif timeframe == '6M':
+                start_date = latest_date - pd.DateOffset(months=6)
+            elif timeframe == '1Y':
+                start_date = latest_date - pd.DateOffset(years=1)
+            elif timeframe == '3Y':
+                start_date = latest_date - pd.DateOffset(years=3)
+            elif timeframe == '5Y':
+                start_date = latest_date - pd.DateOffset(years=5)
+            stock_df_filtered = stock_df_filtered[stock_df_filtered['Date'] >= start_date]
+        else:
+            stock_df_filtered = stock_df
+        
+        # Calculate technical indicators
+        df_with_indicators = pred.calculate_moving_averages(stock_df_filtered, [20, 50, 200])
+        df_with_indicators = pred.calculate_ema(df_with_indicators, [12, 26])
+        df_with_indicators = pred.calculate_rsi(df_with_indicators)
+        df_with_indicators = pred.calculate_macd(df_with_indicators)
+        df_with_indicators = pred.calculate_bollinger_bands(df_with_indicators)
+        
+        # Generate trading signals
+        signals = pred.generate_trading_signals(df_with_indicators)
+        
+        # Create charts
+        charts = pred.create_prediction_charts(df_with_indicators, selected_stock)
+        
+        # Generate forecast
+        forecast_df, slope, intercept = pred.linear_regression_forecast(df_with_indicators, forecast_days=30)
+        
+        # Train LSTM model if available (with reduced parameters for faster training)
+        lstm_results = None
+        lstm_charts = None
+        if lstm_model.is_lstm_available():
+            try:
+                lstm_results = lstm_model.train_lstm_model(
+                    df_with_indicators,
+                    seq_length=30,  # Reduced from 60 for faster training
+                    forecast_days=30,
+                    epochs=20,  # Reduced from 50 for faster training
+                    batch_size=32
+                )
+                if lstm_results:
+                    lstm_charts = lstm_model.create_lstm_charts(
+                        df_with_indicators,
+                        lstm_results,
+                        selected_stock
+                    )
+            except Exception as e:
+                logging.warning(f"LSTM training failed: {str(e)}")
+                lstm_results = {'error': 'Training failed', 'message': str(e)}
+                lstm_charts = None
+        
+        # Build the UI
+        return html.Div([
+            # Trading Signals Section
+            html.Div([
+                html.H3("📊 Trading Signals", style={
+                    'textAlign': 'center', 
+                    'fontSize': 'clamp(16px, 3.5vw, 20px)',
+                    'color': "black",
+                    'fontWeight': '600',
+                    'marginBottom': '20px'
+                }),
+                
+                # Overall Signal
+                html.Div([
+                    html.Div([
+                        html.Div("Overall Signal", style={'fontSize': 'clamp(12px, 2.5vw, 14px)', 'color': '#718096', 'marginBottom': '5px'}),
+                        html.Div(signals['overall'], style={
+                            'fontSize': 'clamp(20px, 4vw, 28px)', 
+                            'fontWeight': '700',
+                            'color': '#10b981' if 'BUY' in signals['overall'] else '#ef4444' if 'SELL' in signals['overall'] else '#6b7280'
+                        }),
+                        html.Div(f"Signal Strength: {signals['strength']}", style={
+                            'fontSize': 'clamp(11px, 2.2vw, 13px)', 
+                            'color': '#718096',
+                            'marginTop': '5px'
+                        })
+                    ], style={
+                        'textAlign': 'center',
+                        'padding': '20px',
+                        'background': 'white',
+                        'borderRadius': '12px',
+                        'color': 'black',
+                        'boxShadow': '0 4px 12px rgba(102, 126, 234, 0.3)'
+                    })
+                ], style={'marginBottom': '20px'}),
+                
+                # Individual Indicators
+                html.Div([
                     html.Div([
                         html.Div([
-                            html.Span("📈 ", style={'fontSize': '20px', 'marginRight': '10px'}),
-                            html.Span("Price prediction using machine learning models")
-                        ], style={'marginBottom': '12px', 'fontSize': 'clamp(12px, 2.5vw, 15px)', 'color': '#4a5568'}),
-                        html.Div([
-                            html.Span("📊 ", style={'fontSize': '20px', 'marginRight': '10px'}),
-                            html.Span("Trend analysis and forecasting")
-                        ], style={'marginBottom': '12px', 'fontSize': 'clamp(12px, 2.5vw, 15px)', 'color': '#4a5568'}),
-                        html.Div([
-                            html.Span("⚠️ ", style={'fontSize': '20px', 'marginRight': '10px'}),
-                            html.Span("Risk assessment metrics")
-                        ], style={'marginBottom': '12px', 'fontSize': 'clamp(12px, 2.5vw, 15px)', 'color': '#4a5568'}),
-                        html.Div([
-                            html.Span("💡 ", style={'fontSize': '20px', 'marginRight': '10px'}),
-                            html.Span("Buy/Sell recommendations")
-                        ], style={'fontSize': 'clamp(12px, 2.5vw, 15px)', 'color': '#4a5568'}),
+                            html.Div([
+                                html.Span(f"{ind['name']}: ", style={'fontWeight': '600', 'color': '#4a5568'}),
+                                html.Span(ind['signal'], style={
+                                    'fontWeight': '700',
+                                    'color': '#10b981' if ind['signal'] == 'BUY' else '#ef4444' if ind['signal'] == 'SELL' else '#6b7280',
+                                    'marginLeft': '10px'
+                                })
+                            ], style={'marginBottom': '5px'}),
+                            html.Div([
+                                html.Span(f"Value: {ind['value']}", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#718096'}),
+                                html.Span(f" • {ind['reason']}", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#718096'})
+                            ])
+                        ], style={
+                            'padding': '12px',
+                            'background': 'white',
+                            'borderRadius': '8px',
+                            'boxShadow': '0 2px 8px rgba(0,0,0,0.06)',
+                            'border': '1px solid #e2e8f0',
+                            'marginBottom': '10px'
+                        })
+                        for ind in signals['indicators']
                     ])
                 ])
             ], style={
-                'maxWidth': '900px', 
-                'marginLeft': 'auto', 
+                'maxWidth': '1200px',
+                'marginLeft': 'auto',
                 'marginRight': 'auto',
-                'margin': '40px auto',
-                'padding': '50px 40px',
+                'marginBottom': '25px',
+                'padding': '20px',
                 'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
-                'borderRadius': '15px',
-                'boxShadow': '0 10px 30px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1)',
-                'border': '1px solid rgba(102, 126, 234, 0.15)'
+                'borderRadius': '12px',
+                'boxShadow': '0 8px 20px rgba(102, 126, 234, 0.15), 0 2px 4px rgba(0,0,0,0.1)',
+                'border': '1px solid rgba(102, 126, 234, 0.1)'
+            }),
+            
+            # LSTM Deep Learning Predictions (MOVED TO TOP)
+            html.Div([
+                html.Div([
+                    html.Div([
+                        html.H4("🧠 LSTM Deep Learning Forecast", style={
+                            'fontSize': 'clamp(14px, 3vw, 18px)',
+                            'color': '#667eea',
+                            'fontWeight': '600',
+                            'marginBottom': '10px'
+                        }),
+                        html.P([
+                            html.Strong("What it is: "),
+                            "Long Short-Term Memory (LSTM) is an advanced deep learning neural network specifically designed for time series prediction. It learns complex patterns from 30 days of historical price data to forecast the next 30 days. The model uses 2 LSTM layers with 50 units each and dropout regularization."
+                        ], style={
+                            'fontSize': 'clamp(10px, 2vw, 12px)',
+                            'color': '#4a5568',
+                            'marginBottom': '8px',
+                            'lineHeight': '1.5'
+                        }),
+                        html.P([
+                            html.Strong("How it works: "),
+                            "The model is trained on 80% of historical data and validated on 20% to prevent overfitting. It uses past price sequences to identify trends, seasonality, and momentum. RMSE (Root Mean Square Error) and MAE (Mean Absolute Error) metrics indicate prediction accuracy - lower values mean better predictions."
+                        ], style={
+                            'fontSize': 'clamp(10px, 2vw, 12px)',
+                            'color': '#4a5568',
+                            'marginBottom': '12px',
+                            'lineHeight': '1.5'
+                        }),
+                    ]),
+                    
+                    # LSTM Results
+                    html.Div([
+                        # Show LSTM results if available and successful
+                        html.Div([
+                            # Model Performance Metrics (Compact)
+                            html.Div([
+                                html.Div([
+                                    html.P("RMSE", style={'fontSize': 'clamp(9px, 1.8vw, 11px)', 'color': '#718096', 'marginBottom': '3px'}),
+                                    html.P(f"₹{lstm_results['metrics']['rmse']:.2f}", style={'fontSize': 'clamp(12px, 2.5vw, 14px)', 'color': '#667eea', 'fontWeight': 'bold'})
+                                ], style={'flex': '1', 'textAlign': 'center', 'padding': '8px', 'background': '#f7fafc', 'borderRadius': '6px', 'margin': '3px'}),
+                                html.Div([
+                                    html.P("MAE", style={'fontSize': 'clamp(9px, 1.8vw, 11px)', 'color': '#718096', 'marginBottom': '3px'}),
+                                    html.P(f"₹{lstm_results['metrics']['mae']:.2f}", style={'fontSize': 'clamp(12px, 2.5vw, 14px)', 'color': '#667eea', 'fontWeight': 'bold'})
+                                ], style={'flex': '1', 'textAlign': 'center', 'padding': '8px', 'background': '#f7fafc', 'borderRadius': '6px', 'margin': '3px'}),
+                                html.Div([
+                                    html.P("Samples", style={'fontSize': 'clamp(9px, 1.8vw, 11px)', 'color': '#718096', 'marginBottom': '3px'}),
+                                    html.P(f"{lstm_results['training_info']['train_samples']}", style={'fontSize': 'clamp(12px, 2.5vw, 14px)', 'color': '#667eea', 'fontWeight': 'bold'})
+                                ], style={'flex': '1', 'textAlign': 'center', 'padding': '8px', 'background': '#f7fafc', 'borderRadius': '6px', 'margin': '3px'}),
+                            ], style={'display': 'flex', 'justifyContent': 'space-around', 'flexWrap': 'wrap', 'marginBottom': '15px'}),
+                            
+                            # Compact Charts
+                            html.Div([
+                                dcc.Graph(
+                                    figure=lstm_charts.get('forecast'),
+                                    config={'displayModeBar': False},
+                                    style={'height': '300px'}
+                                ) if lstm_charts and 'forecast' in lstm_charts else html.Div(),
+                            ])
+                            
+                        ]) if lstm_results and lstm_charts and 'metrics' in lstm_results and 'success' in lstm_results and lstm_results['success'] else html.Div([
+                            html.P(f"⚠️ {lstm_results.get('message', 'LSTM training failed')}", style={
+                                'textAlign': 'center',
+                                'color': '#ef4444',
+                                'fontSize': 'clamp(11px, 2.2vw, 13px)',
+                                'padding': '15px'
+                            })
+                        ]) if lstm_results and 'error' in lstm_results else html.Div([
+                            html.P("🔄 Training LSTM model... This may take 1-2 minutes.", style={
+                                'textAlign': 'center',
+                                'color': '#667eea',
+                                'fontSize': 'clamp(11px, 2.2vw, 13px)',
+                                'padding': '15px'
+                            })
+                        ]) if lstm_model.is_lstm_available() else html.Div([
+                            html.P("⚠️ TensorFlow not available.", style={
+                                'textAlign': 'center',
+                                'color': '#ef4444',
+                                'fontSize': 'clamp(11px, 2.2vw, 13px)',
+                                'padding': '15px'
+                            })
+                        ])
+                    ])
+                ], style={
+                    'padding': '15px',
+                    'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                    'borderRadius': '12px',
+                    'boxShadow': '0 8px 20px rgba(102, 126, 234, 0.15), 0 2px 4px rgba(0,0,0,0.1)',
+                    'border': '1px solid rgba(102, 126, 234, 0.1)',
+                    'marginBottom': '15px'
+                })
+            ], style={
+                'maxWidth': '1200px',
+                'marginLeft': 'auto',
+                'marginRight': 'auto',
+            }),
+            
+            # Technical Indicators - Compact Cards
+            html.Div([
+                # Moving Averages Card
+                html.Div([
+                    html.Div([
+                        html.H4("📈 Moving Averages", style={
+                            'fontSize': 'clamp(13px, 2.8vw, 16px)',
+                            'color': '#667eea',
+                            'fontWeight': '600',
+                            'marginBottom': '8px'
+                        }),
+                        html.P([
+                            html.Strong("What it shows: "),
+                            "Moving Averages (MA) smooth out price fluctuations to reveal underlying trends. We track three timeframes: SMA 20 (short-term momentum), SMA 50 (medium-term trend), and SMA 200 (long-term trend). These act as dynamic support and resistance levels."
+                        ], style={
+                            'fontSize': 'clamp(10px, 2vw, 12px)',
+                            'color': '#4a5568',
+                            'marginBottom': '8px',
+                            'lineHeight': '1.5'
+                        }),
+                        html.P([
+                            html.Strong("How to interpret: "),
+                            "When price is above the MA, it indicates an uptrend. A 'Golden Cross' (SMA 50 crossing above SMA 200) is a strong bullish signal, while a 'Death Cross' (SMA 50 crossing below SMA 200) suggests bearish conditions."
+                        ], style={
+                            'fontSize': 'clamp(10px, 2vw, 12px)',
+                            'color': '#4a5568',
+                            'marginBottom': '10px',
+                            'lineHeight': '1.5'
+                        }),
+                    ]),
+                    dcc.Graph(figure=charts['moving_averages'], config={'displayModeBar': False}, style={'height': '300px'})
+                ], style={
+                    'marginBottom': '15px',
+                    'padding': '15px',
+                    'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                    'borderRadius': '12px',
+                    'boxShadow': '0 8px 20px rgba(102, 126, 234, 0.15), 0 2px 4px rgba(0,0,0,0.1)',
+                    'border': '1px solid rgba(102, 126, 234, 0.1)'
+                }),
+                
+                # RSI Card
+                html.Div([
+                    html.Div([
+                        html.H4("📊 RSI (Relative Strength Index)", style={
+                            'fontSize': 'clamp(13px, 2.8vw, 16px)',
+                            'color': '#667eea',
+                            'fontWeight': '600',
+                            'marginBottom': '8px'
+                        }),
+                        html.P([
+                            html.Strong("What it shows: "),
+                            "RSI measures the magnitude and velocity of price changes on a scale of 0-100. It identifies whether a stock is potentially overbought or oversold based on recent price momentum over a 14-day period."
+                        ], style={
+                            'fontSize': 'clamp(10px, 2vw, 12px)',
+                            'color': '#4a5568',
+                            'marginBottom': '8px',
+                            'lineHeight': '1.5'
+                        }),
+                        html.P([
+                            html.Strong("How to interpret: "),
+                            "RSI below 30 suggests the stock is oversold and may be due for a bounce (potential buy opportunity). RSI above 70 indicates overbought conditions and possible price correction (potential sell signal). RSI between 30-70 shows neutral momentum."
+                        ], style={
+                            'fontSize': 'clamp(10px, 2vw, 12px)',
+                            'color': '#4a5568',
+                            'marginBottom': '10px',
+                            'lineHeight': '1.5'
+                        }),
+                    ]),
+                    dcc.Graph(figure=charts.get('rsi'), config={'displayModeBar': False}, style={'height': '300px'})
+                ], style={
+                    'marginBottom': '15px',
+                    'padding': '15px',
+                    'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                    'borderRadius': '12px',
+                    'boxShadow': '0 8px 20px rgba(102, 126, 234, 0.15), 0 2px 4px rgba(0,0,0,0.1)',
+                    'border': '1px solid rgba(102, 126, 234, 0.1)'
+                }) if 'rsi' in charts else html.Div(),
+                
+                # MACD Card
+                html.Div([
+                    html.Div([
+                        html.H4("📈 MACD (Moving Average Convergence Divergence)", style={
+                            'fontSize': 'clamp(13px, 2.8vw, 16px)',
+                            'color': '#667eea',
+                            'fontWeight': '600',
+                            'marginBottom': '8px'
+                        }),
+                        html.P([
+                            html.Strong("What it shows: "),
+                            "MACD reveals the relationship between two exponential moving averages (12-day and 26-day EMAs). It consists of the MACD line, signal line (9-day EMA of MACD), and histogram (difference between MACD and signal line) to show momentum changes."
+                        ], style={
+                            'fontSize': 'clamp(10px, 2vw, 12px)',
+                            'color': '#4a5568',
+                            'marginBottom': '8px',
+                            'lineHeight': '1.5'
+                        }),
+                        html.P([
+                            html.Strong("How to interpret: "),
+                            "When the MACD line crosses above the signal line, it's a bullish signal suggesting upward momentum. Crossing below indicates bearish momentum. The histogram shows the strength of the trend - larger bars mean stronger momentum."
+                        ], style={
+                            'fontSize': 'clamp(10px, 2vw, 12px)',
+                            'color': '#4a5568',
+                            'marginBottom': '10px',
+                            'lineHeight': '1.5'
+                        }),
+                    ]),
+                    dcc.Graph(figure=charts.get('macd'), config={'displayModeBar': False}, style={'height': '300px'})
+                ], style={
+                    'marginBottom': '15px',
+                    'padding': '15px',
+                    'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                    'borderRadius': '12px',
+                    'boxShadow': '0 8px 20px rgba(102, 126, 234, 0.15), 0 2px 4px rgba(0,0,0,0.1)',
+                    'border': '1px solid rgba(102, 126, 234, 0.1)'
+                }) if 'macd' in charts else html.Div(),
+                
+                # Bollinger Bands Card
+                html.Div([
+                    html.Div([
+                        html.H4("📊 Bollinger Bands", style={
+                            'fontSize': 'clamp(13px, 2.8vw, 16px)',
+                            'color': '#667eea',
+                            'fontWeight': '600',
+                            'marginBottom': '8px'
+                        }),
+                        html.P([
+                            html.Strong("What it shows: "),
+                            "Bollinger Bands consist of three lines: a 20-day simple moving average (middle band) and two bands set at 2 standard deviations above and below. The bands expand during high volatility and contract during low volatility periods."
+                        ], style={
+                            'fontSize': 'clamp(10px, 2vw, 12px)',
+                            'color': '#4a5568',
+                            'marginBottom': '8px',
+                            'lineHeight': '1.5'
+                        }),
+                        html.P([
+                            html.Strong("How to interpret: "),
+                            "When price touches the lower band, it may be oversold (potential buy). When it touches the upper band, it may be overbought (potential sell). Price bouncing between bands indicates ranging market. Band width expansion signals increasing volatility."
+                        ], style={
+                            'fontSize': 'clamp(10px, 2vw, 12px)',
+                            'color': '#4a5568',
+                            'marginBottom': '10px',
+                            'lineHeight': '1.5'
+                        }),
+                    ]),
+                    dcc.Graph(figure=charts.get('bollinger_bands'), config={'displayModeBar': False}, style={'height': '300px'})
+                ], style={
+                    'marginBottom': '15px',
+                    'padding': '15px',
+                    'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                    'borderRadius': '12px',
+                    'boxShadow': '0 8px 20px rgba(102, 126, 234, 0.15), 0 2px 4px rgba(0,0,0,0.1)',
+                    'border': '1px solid rgba(102, 126, 234, 0.1)'
+                }) if 'bollinger_bands' in charts else html.Div()
+                
+            ], style={
+                'maxWidth': '1200px',
+                'marginLeft': 'auto',
+                'marginRight': 'auto'
             })
         ])
+
+    # No data case
+    return html.Div("No data available", style={"textAlign": "center", "padding": "20px"})
+
+
+# Callback to toggle timeframe selector visibility based on active tab
+@app.callback(
+    Output('timeframe-container', 'style'),
+    Input('tabs', 'value')
+)
+def toggle_timeframe_visibility(tab):
+    """Hide timeframe selector on Predictive Analysis tab, show on Price Analysis tab."""
+    if tab == 'tab-prediction':
+        return {'display': 'none'}
+    else:
+        return {'width': '15%', 'display': 'block'}
+
 
 # Callback for top performers table (outside tabs, always visible)
 @app.callback(

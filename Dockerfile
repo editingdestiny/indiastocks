@@ -8,13 +8,14 @@ RUN apt-get update \
 WORKDIR /app
 
 # Install required packages
-RUN pip install --no-cache-dir fastapi uvicorn pandas dash plotly yfinance
+RUN pip install --no-cache-dir pandas dash plotly yfinance scikit-learn numpy tensorflow
 
 # Copy all necessary files
 COPY docker/update_cron /etc/cron.d/update_daily
 COPY run_update.sh /app/run_update.sh
-COPY api.py /app/api.py
 COPY dashboard.py /app/dashboard.py
+COPY predictive_analysis.py /app/predictive_analysis.py
+COPY lstm_model.py /app/lstm_model.py
 COPY start_services.sh /app/start_services.sh
 COPY update_daily.py /app/update_daily.py
 
