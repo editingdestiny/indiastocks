@@ -8,6 +8,7 @@ import logging
 import time
 import predictive_analysis as pred
 import lstm_model
+import backtesting
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -283,6 +284,28 @@ app.layout = html.Div([
         dcc.Tab(
             label='🔮 Predictive Analysis', 
             value='tab-prediction', 
+            style={
+                'padding': '12px 24px', 
+                'fontWeight': '600',
+                'fontSize': 'clamp(13px, 3vw, 16px)',
+                'borderRadius': '8px 8px 0 0',
+                'backgroundColor': '#f8f9fa',
+                'border': 'none'
+            }, 
+            selected_style={
+                'padding': '12px 24px', 
+                'fontWeight': '700',
+                'fontSize': 'clamp(13px, 3vw, 16px)',
+                'borderRadius': '8px 8px 0 0',
+                'background': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'color': 'white',
+                'border': 'none',
+                'boxShadow': '0 -2px 8px rgba(102, 126, 234, 0.3)'
+            }
+        ),
+        dcc.Tab(
+            label='📈 Backtesting', 
+            value='tab-backtesting', 
             style={
                 'padding': '12px 24px', 
                 'fontWeight': '600',
@@ -1081,6 +1104,311 @@ def render_tab_content(tab, selected_stock, timeframe):
                 'marginRight': 'auto'
             })
         ])
+    
+    elif tab == 'tab-backtesting':
+        # Get the data for the selected stock
+        if not selected_stock:
+            return html.Div([
+                html.Div([
+                    html.Div("📈", style={'fontSize': '60px', 'textAlign': 'center', 'marginBottom': '20px'}),
+                    html.H3("Backtesting", style={
+                        'textAlign': 'center', 
+                        'marginBottom': '15px', 
+                        'fontSize': 'clamp(18px, 4vw, 26px)', 
+                        'color': '#667eea',
+                        'fontWeight': '700'
+                    }),
+                    html.P("Please select a stock to run backtesting", style={
+                        'textAlign': 'center', 
+                        'fontSize': 'clamp(14px, 3vw, 18px)', 
+                        'color': '#718096',
+                        'marginBottom': '15px'
+                    }),
+                    html.P("Backtesting validates LSTM predictions by training on historical data and testing on the last 6 months.", style={
+                        'textAlign': 'center', 
+                        'fontSize': 'clamp(12px, 2.5vw, 14px)', 
+                        'color': '#9ca3af',
+                        'maxWidth': '600px',
+                        'marginLeft': 'auto',
+                        'marginRight': 'auto'
+                    })
+                ], style={
+                    'maxWidth': '900px', 
+                    'marginLeft': 'auto', 
+                    'marginRight': 'auto',
+                    'margin': '40px auto',
+                    'padding': '50px 40px',
+                    'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                    'borderRadius': '15px',
+                    'boxShadow': '0 10px 30px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1)',
+                    'border': '1px solid rgba(102, 126, 234, 0.15)'
+                })
+            ])
+        
+        # Get stock data
+        stock_df = get_stock_data(selected_stock)
+        if stock_df is None or stock_df.empty:
+            return html.Div("No data available for this stock")
+        
+        # Run backtesting
+        try:
+            # Get full data (not filtered by timeframe for backtesting)
+            backtest_results = backtesting.run_backtesting(
+                cached_df if cached_df else None,
+                selected_stock,
+                test_months=6,
+                seq_length=30,
+                epochs=20
+            )
+            
+            if not backtest_results or not backtest_results.get('success'):
+                error_msg = backtest_results.get('error', 'Unknown error') if backtest_results else 'Backtesting failed'
+                return html.Div([
+                    html.Div([
+                        html.Div("⚠️", style={'fontSize': '50px', 'textAlign': 'center', 'marginBottom': '15px'}),
+                        html.H4("Backtesting Error", style={
+                            'textAlign': 'center', 
+                            'color': '#ef4444',
+                            'marginBottom': '10px'
+                        }),
+                        html.P(error_msg, style={
+                            'textAlign': 'center', 
+                            'color': '#718096'
+                        })
+                    ], style={
+                        'maxWidth': '600px',
+                        'marginLeft': 'auto',
+                        'marginRight': 'auto',
+                        'padding': '40px',
+                        'background': 'white',
+                        'borderRadius': '12px',
+                        'boxShadow': '0 4px 12px rgba(0,0,0,0.1)'
+                    })
+                ])
+            
+            charts = backtest_results['charts']
+            metrics = charts['metrics']
+            
+            # Build backtesting UI
+            return html.Div([
+                # Header Info
+                html.Div([
+                    html.H3(f"📈 Backtesting Results: {selected_stock}", style={
+                        'textAlign': 'center',
+                        'fontSize': 'clamp(16px, 3.5vw, 22px)',
+                        'color': '#667eea',
+                        'fontWeight': '700',
+                        'marginBottom': '15px'
+                    }),
+                    html.Div([
+                        html.Div([
+                            html.Div("Training Period", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#718096', 'marginBottom': '5px'}),
+                            html.Div(backtest_results['train_period'], style={'fontSize': 'clamp(11px, 2.2vw, 14px)', 'fontWeight': '600', 'color': '#4a5568'}),
+                            html.Div(f"({backtest_results['train_days']} days)", style={'fontSize': 'clamp(9px, 1.8vw, 11px)', 'color': '#9ca3af', 'marginTop': '2px'})
+                        ], style={
+                            'textAlign': 'center',
+                            'padding': '15px',
+                            'background': 'white',
+                            'borderRadius': '10px',
+                            'boxShadow': '0 2px 8px rgba(0,0,0,0.06)',
+                            'border': '1px solid #e2e8f0'
+                        }),
+                        html.Div([
+                            html.Div("Testing Period", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#718096', 'marginBottom': '5px'}),
+                            html.Div(backtest_results['test_period'], style={'fontSize': 'clamp(11px, 2.2vw, 14px)', 'fontWeight': '600', 'color': '#4a5568'}),
+                            html.Div(f"({backtest_results['test_days']} days)", style={'fontSize': 'clamp(9px, 1.8vw, 11px)', 'color': '#9ca3af', 'marginTop': '2px'})
+                        ], style={
+                            'textAlign': 'center',
+                            'padding': '15px',
+                            'background': 'white',
+                            'borderRadius': '10px',
+                            'boxShadow': '0 2px 8px rgba(0,0,0,0.06)',
+                            'border': '1px solid #e2e8f0'
+                        })
+                    ], style={
+                        'display': 'grid',
+                        'gridTemplateColumns': 'repeat(auto-fit, minmax(200px, 1fr))',
+                        'gap': '15px',
+                        'marginBottom': '20px'
+                    })
+                ], style={
+                    'maxWidth': '1200px',
+                    'marginLeft': 'auto',
+                    'marginRight': 'auto',
+                    'marginBottom': '25px',
+                    'padding': '20px',
+                    'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                    'borderRadius': '12px',
+                    'boxShadow': '0 8px 20px rgba(102, 126, 234, 0.15)',
+                    'border': '1px solid rgba(102, 126, 234, 0.1)'
+                }),
+                
+                # Performance Metrics
+                html.Div([
+                    html.H4("🎯 Performance Metrics", style={
+                        'textAlign': 'center',
+                        'fontSize': 'clamp(14px, 3vw, 18px)',
+                        'color': '#667eea',
+                        'fontWeight': '600',
+                        'marginBottom': '15px'
+                    }),
+                    html.Div([
+                        html.Div([
+                            html.Div("RMSE", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#718096', 'marginBottom': '5px'}),
+                            html.Div(f"₹{metrics['rmse']:.2f}", style={'fontSize': 'clamp(16px, 3.5vw, 20px)', 'fontWeight': '700', 'color': '#667eea'}),
+                            html.Div("Root Mean Square Error", style={'fontSize': 'clamp(9px, 1.8vw, 10px)', 'color': '#9ca3af', 'marginTop': '2px'})
+                        ], style={
+                            'textAlign': 'center',
+                            'padding': '15px',
+                            'background': 'white',
+                            'borderRadius': '10px',
+                            'boxShadow': '0 4px 12px rgba(102, 126, 234, 0.2)',
+                            'border': '1px solid rgba(102, 126, 234, 0.1)'
+                        }),
+                        html.Div([
+                            html.Div("MAE", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#718096', 'marginBottom': '5px'}),
+                            html.Div(f"₹{metrics['mae']:.2f}", style={'fontSize': 'clamp(16px, 3.5vw, 20px)', 'fontWeight': '700', 'color': '#10b981'}),
+                            html.Div("Mean Absolute Error", style={'fontSize': 'clamp(9px, 1.8vw, 10px)', 'color': '#9ca3af', 'marginTop': '2px'})
+                        ], style={
+                            'textAlign': 'center',
+                            'padding': '15px',
+                            'background': 'white',
+                            'borderRadius': '10px',
+                            'boxShadow': '0 4px 12px rgba(16, 185, 129, 0.2)',
+                            'border': '1px solid rgba(16, 185, 129, 0.1)'
+                        }),
+                        html.Div([
+                            html.Div("MAPE", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#718096', 'marginBottom': '5px'}),
+                            html.Div(f"{metrics['mape']:.2f}%", style={'fontSize': 'clamp(16px, 3.5vw, 20px)', 'fontWeight': '700', 'color': '#f59e0b'}),
+                            html.Div("Mean Absolute % Error", style={'fontSize': 'clamp(9px, 1.8vw, 10px)', 'color': '#9ca3af', 'marginTop': '2px'})
+                        ], style={
+                            'textAlign': 'center',
+                            'padding': '15px',
+                            'background': 'white',
+                            'borderRadius': '10px',
+                            'boxShadow': '0 4px 12px rgba(245, 158, 11, 0.2)',
+                            'border': '1px solid rgba(245, 158, 11, 0.1)'
+                        }),
+                        html.Div([
+                            html.Div("Direction Accuracy", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#718096', 'marginBottom': '5px'}),
+                            html.Div(f"{metrics['directional_accuracy']:.1f}%", style={'fontSize': 'clamp(16px, 3.5vw, 20px)', 'fontWeight': '700', 'color': '#8b5cf6'}),
+                            html.Div("Trend Prediction Accuracy", style={'fontSize': 'clamp(9px, 1.8vw, 10px)', 'color': '#9ca3af', 'marginTop': '2px'})
+                        ], style={
+                            'textAlign': 'center',
+                            'padding': '15px',
+                            'background': 'white',
+                            'borderRadius': '10px',
+                            'boxShadow': '0 4px 12px rgba(139, 92, 246, 0.2)',
+                            'border': '1px solid rgba(139, 92, 246, 0.1)'
+                        })
+                    ], style={
+                        'display': 'grid',
+                        'gridTemplateColumns': 'repeat(auto-fit, minmax(150px, 1fr))',
+                        'gap': '15px'
+                    })
+                ], style={
+                    'maxWidth': '1200px',
+                    'marginLeft': 'auto',
+                    'marginRight': 'auto',
+                    'marginBottom': '25px',
+                    'padding': '20px',
+                    'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                    'borderRadius': '12px',
+                    'boxShadow': '0 8px 20px rgba(102, 126, 234, 0.15)',
+                    'border': '1px solid rgba(102, 126, 234, 0.1)'
+                }),
+                
+                # Charts
+                html.Div([
+                    # Predicted vs Actual
+                    dcc.Graph(figure=charts['comparison'], config={'displayModeBar': False}),
+                    
+                    # Error Distribution and Error Over Time side by side
+                    html.Div([
+                        html.Div([
+                            dcc.Graph(figure=charts['error_dist'], config={'displayModeBar': False})
+                        ], style={'width': '48%'}),
+                        html.Div([
+                            dcc.Graph(figure=charts['error_time'], config={'displayModeBar': False})
+                        ], style={'width': '48%'})
+                    ], style={
+                        'display': 'flex',
+                        'justifyContent': 'space-between',
+                        'gap': '20px',
+                        'flexWrap': 'wrap'
+                    }),
+                    
+                    # Training Loss
+                    dcc.Graph(figure=charts['training'], config={'displayModeBar': False}) if charts.get('training') else html.Div()
+                ], style={
+                    'maxWidth': '1200px',
+                    'marginLeft': 'auto',
+                    'marginRight': 'auto'
+                }),
+                
+                # Info Box
+                html.Div([
+                    html.H4("📚 Understanding the Metrics", style={
+                        'fontSize': 'clamp(13px, 2.8vw, 16px)',
+                        'color': '#667eea',
+                        'fontWeight': '600',
+                        'marginBottom': '12px'
+                    }),
+                    html.Ul([
+                        html.Li([
+                            html.Strong("RMSE (Root Mean Square Error): "),
+                            "Measures average prediction error. Lower is better. Values close to typical daily price movements indicate good performance."
+                        ], style={'marginBottom': '8px', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#4a5568'}),
+                        html.Li([
+                            html.Strong("MAE (Mean Absolute Error): "),
+                            "Average absolute difference between predicted and actual prices. Lower is better and easier to interpret than RMSE."
+                        ], style={'marginBottom': '8px', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#4a5568'}),
+                        html.Li([
+                            html.Strong("MAPE (Mean Absolute Percentage Error): "),
+                            "Error as a percentage of actual price. Values under 10% are excellent, under 20% are good."
+                        ], style={'marginBottom': '8px', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#4a5568'}),
+                        html.Li([
+                            html.Strong("Directional Accuracy: "),
+                            "Percentage of time the model correctly predicted whether price would go up or down. Above 50% is better than random, above 60% is very good."
+                        ], style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#4a5568'})
+                    ], style={'paddingLeft': '20px'})
+                ], style={
+                    'maxWidth': '1200px',
+                    'marginLeft': 'auto',
+                    'marginRight': 'auto',
+                    'marginTop': '25px',
+                    'padding': '20px',
+                    'background': 'white',
+                    'borderRadius': '12px',
+                    'boxShadow': '0 4px 12px rgba(0,0,0,0.08)',
+                    'border': '1px solid #e2e8f0'
+                })
+            ], style={'display': 'flex', 'flexDirection': 'column', 'gap': '20px'})
+            
+        except Exception as e:
+            logger.error(f"Backtesting error: {e}", exc_info=True)
+            return html.Div([
+                html.Div([
+                    html.Div("⚠️", style={'fontSize': '50px', 'textAlign': 'center', 'marginBottom': '15px'}),
+                    html.H4("Backtesting Error", style={
+                        'textAlign': 'center', 
+                        'color': '#ef4444',
+                        'marginBottom': '10px'
+                    }),
+                    html.P(str(e), style={
+                        'textAlign': 'center', 
+                        'color': '#718096'
+                    })
+                ], style={
+                    'maxWidth': '600px',
+                    'marginLeft': 'auto',
+                    'marginRight': 'auto',
+                    'padding': '40px',
+                    'background': 'white',
+                    'borderRadius': '12px',
+                    'boxShadow': '0 4px 12px rgba(0,0,0,0.1)'
+                })
+            ])
 
     # No data case
     return html.Div("No data available", style={"textAlign": "center", "padding": "20px"})
@@ -1092,8 +1420,8 @@ def render_tab_content(tab, selected_stock, timeframe):
     Input('tabs', 'value')
 )
 def toggle_timeframe_visibility(tab):
-    """Hide timeframe selector on Predictive Analysis tab, show on Price Analysis tab."""
-    if tab == 'tab-prediction':
+    """Hide timeframe selector on Predictive Analysis and Backtesting tabs, show on Price Analysis tab."""
+    if tab in ['tab-prediction', 'tab-backtesting']:
         return {'display': 'none'}
     else:
         return {'width': '15%', 'display': 'block'}

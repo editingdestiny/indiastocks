@@ -16,6 +16,7 @@ COPY run_update.sh /app/run_update.sh
 COPY dashboard.py /app/dashboard.py
 COPY predictive_analysis.py /app/predictive_analysis.py
 COPY lstm_model.py /app/lstm_model.py
+COPY backtesting.py /app/backtesting.py
 COPY start_services.sh /app/start_services.sh
 COPY update_daily.py /app/update_daily.py
 
