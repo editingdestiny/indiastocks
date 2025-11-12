@@ -81,14 +81,15 @@ def backup_file(file_path):
     print(f"Backup saved to {dest}")
 
 
-def fetch_new_data(tickers, start_date):
+def fetch_daily_batch(tickers, start_date):
     """Download daily data from start_date (inclusive) to today for the provided tickers in batches.
     Returns a DataFrame with MultiIndex columns like yfinance returns.
     """
     all_batches = []
     today = datetime.now().date()
-    if start_date >= today:
-        print("No new data to fetch (start_date >= today)")
+    # Allow fetching data for today if it's available (market closes before cron runs)
+    if start_date > today:
+        print("No new data to fetch (start_date > today)")
         return None
 
     for i in range(0, len(tickers), BATCH_SIZE):
@@ -163,13 +164,22 @@ def main():
         return
 
     # Fetch new data
-    new_data = fetch_new_data(base_symbols, start_date)
+    new_data = fetch_daily_batch(base_symbols, start_date)
     if new_data is None:
         print("No new data fetched. Nothing to update.")
         return
 
     # Merge and save to same file
     merge_and_save(existing, new_data, data_file)
+    
+    # Signal dashboard to invalidate cache
+    cache_signal_file = "/app/.cache_invalidate"
+    try:
+        with open(cache_signal_file, 'w') as f:
+            f.write(str(datetime.now()))
+        print(f"Created cache invalidation signal at {cache_signal_file}")
+    except Exception as e:
+        print(f"Warning: Could not create cache signal: {e}")
 
 
 if __name__ == '__main__':

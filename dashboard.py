@@ -2,13 +2,17 @@ import dash
 from dash import html, dcc
 import plotly.graph_objects as go
 import pandas as pd
+import numpy as np
 from dash.dependencies import Input, Output
 from pathlib import Path
 import logging
 import time
+import os
 import predictive_analysis as pred
 import lstm_model
 import backtesting
+from prediction_tracker import prediction_tracker
+import fundamentals
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -55,6 +59,36 @@ app.index_string = '''
                     flex: 1 1 48% !important;
                 }
             }
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); opacity: 1; }
+                50% { transform: scale(1.1); opacity: 0.8; }
+            }
+            @keyframes shimmer {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes rotate {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            @keyframes bounce {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+            .loading-brain {
+                animation: pulse 2s ease-in-out infinite;
+                display: inline-block;
+            }
+            .loading-progress {
+                animation: shimmer 2s ease-in-out infinite;
+            }
+            .loading-dot {
+                animation: bounce 1.4s ease-in-out infinite;
+            }
         </style>
     </head>
     <body>
@@ -73,12 +107,40 @@ cached_df = None
 stock_list = []
 cache_timestamp = None
 CACHE_TIMEOUT = 14400  # 4 hours in seconds
+CACHE_SIGNAL_FILE = "/app/.cache_invalidate"
+
+def check_cache_invalidation():
+    """Check if cache should be invalidated due to data update."""
+    global cache_timestamp
+    
+    if not os.path.exists(CACHE_SIGNAL_FILE):
+        return False
+    
+    try:
+        # Check if signal file is newer than cache
+        signal_mtime = os.path.getmtime(CACHE_SIGNAL_FILE)
+        if cache_timestamp is None or signal_mtime > cache_timestamp:
+            logger.info(f"Cache invalidation signal detected (signal time: {signal_mtime}, cache time: {cache_timestamp})")
+            # Remove the signal file after reading
+            os.remove(CACHE_SIGNAL_FILE)
+            logger.info("Removed cache invalidation signal file")
+            return True
+    except Exception as e:
+        logger.warning(f"Error checking cache invalidation signal: {e}")
+    
+    return False
 
 def load_data():
     """Load stock data from nse_all_10y.csv with multi-index columns."""
     global cached_df, stock_list, cache_timestamp
     
-    # Check if cache is still valid (within 1 hour)
+    # Check for cache invalidation signal first
+    if check_cache_invalidation():
+        logger.info("Cache invalidated by update signal, forcing reload...")
+        cached_df = None
+        cache_timestamp = None
+    
+    # Check if cache is still valid (within 4 hours)
     import time
     current_time = time.time()
     if cached_df is not None and cache_timestamp is not None:
@@ -126,6 +188,11 @@ def get_latest_date():
         return latest_date.strftime('%B %d, %Y')
     return "Unknown"
 
+# Don't cache this - always get fresh date
+def get_current_latest_date():
+    """Get the current latest date without caching."""
+    return get_latest_date()
+
 latest_data_date = get_latest_date()
 
 # Layout of the dashboard
@@ -149,7 +216,8 @@ app.layout = html.Div([
                    'margin': '0',
                    'marginBottom': '5px'
                }),
-        html.P(f"Latest Data: {latest_data_date}", 
+        html.P(id='latest-data-date',
+               children=f"Latest Data: {latest_data_date}",
                style={
                    'textAlign': 'center', 
                    'color': 'rgba(255,255,255,0.8)', 
@@ -226,6 +294,7 @@ app.layout = html.Div([
             dcc.Dropdown(
                 id='timeframe-selector',
                 options=[
+                    {'label': 'Today', 'value': 'TODAY'},
                     {'label': '1 Month', 'value': '1M'},
                     {'label': '3 Months', 'value': '3M'},
                     {'label': '6 Months', 'value': '6M'},
@@ -325,6 +394,28 @@ app.layout = html.Div([
                 'boxShadow': '0 -2px 8px rgba(102, 126, 234, 0.3)'
             }
         ),
+        dcc.Tab(
+            label='💼 Fundamentals', 
+            value='tab-fundamentals', 
+            style={
+                'padding': '12px 24px', 
+                'fontWeight': '600',
+                'fontSize': 'clamp(13px, 3vw, 16px)',
+                'borderRadius': '8px 8px 0 0',
+                'backgroundColor': '#f8f9fa',
+                'border': 'none'
+            }, 
+            selected_style={
+                'padding': '12px 24px', 
+                'fontWeight': '700',
+                'fontSize': 'clamp(13px, 3vw, 16px)',
+                'borderRadius': '8px 8px 0 0',
+                'background': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'color': 'white',
+                'border': 'none',
+                'boxShadow': '0 -2px 8px rgba(102, 126, 234, 0.3)'
+            }
+        ),
     ], style={
         'maxWidth': '1200px', 
         'marginLeft': 'auto', 
@@ -335,16 +426,10 @@ app.layout = html.Div([
     # Tab content with loading spinner positioned near tabs
     dcc.Loading(
         id="loading-tab-content",
-        type="circle",
+        type="dot",
         color="#667eea",
+        fullscreen=True,
         style={'minHeight': '200px'},
-        parent_style={
-            'display': 'flex',
-            'justifyContent': 'center',
-            'alignItems': 'flex-start',
-            'paddingTop': '50px',
-            'minHeight': '300px'
-        },
         children=html.Div(id='tabs-content', style={'width': '100%'})
     ),
     
@@ -397,6 +482,184 @@ def get_stock_data(ticker):
     
     return stock_df
 
+def create_prediction_history_ui(ticker):
+    """Create UI components for prediction history and accuracy"""
+    if not ticker:
+        return html.P("Select a stock to view prediction history", style={
+            'textAlign': 'center',
+            'color': '#718096',
+            'fontSize': 'clamp(11px, 2.2vw, 13px)',
+            'padding': '20px'
+        })
+    
+    # Update actual prices for this ticker
+    stock_df = get_stock_data(ticker)
+    if stock_df is not None and not stock_df.empty:
+        prediction_tracker.batch_update_actual_prices(ticker, stock_df)
+    
+    # Get accuracy metrics
+    metrics = prediction_tracker.get_accuracy_metrics(ticker, days=90)
+    
+    # Get prediction history
+    history_df = prediction_tracker.get_prediction_history(ticker, days=90)
+    
+    if metrics['total_predictions'] == 0:
+        return html.Div([
+            html.P("🔮 No prediction history yet", style={
+                'textAlign': 'center',
+                'color': '#667eea',
+                'fontSize': 'clamp(12px, 2.5vw, 14px)',
+                'fontWeight': '600',
+                'marginBottom': '10px'
+            }),
+            html.P("Predictions will be recorded when the LSTM model generates forecasts. Once target dates pass, actual prices will be compared to show accuracy.", style={
+                'textAlign': 'center',
+                'color': '#718096',
+                'fontSize': 'clamp(10px, 2vw, 12px)',
+                'padding': '10px 20px',
+                'lineHeight': '1.5'
+            })
+        ])
+    
+    # Accuracy Summary Cards
+    accuracy_cards = html.Div([
+        html.Div([
+            html.P("Total Predictions", style={'fontSize': 'clamp(9px, 1.8vw, 11px)', 'color': '#718096', 'marginBottom': '3px'}),
+            html.P(f"{metrics['total_predictions']}", style={'fontSize': 'clamp(14px, 2.8vw, 16px)', 'color': '#667eea', 'fontWeight': 'bold'})
+        ], style={'flex': '1', 'textAlign': 'center', 'padding': '10px', 'background': '#f7fafc', 'borderRadius': '6px', 'margin': '3px'}),
+        
+        html.Div([
+            html.P("Verified", style={'fontSize': 'clamp(9px, 1.8vw, 11px)', 'color': '#718096', 'marginBottom': '3px'}),
+            html.P(f"{metrics['verified_predictions']}", style={'fontSize': 'clamp(14px, 2.8vw, 16px)', 'color': '#10b981', 'fontWeight': 'bold'})
+        ], style={'flex': '1', 'textAlign': 'center', 'padding': '10px', 'background': '#f7fafc', 'borderRadius': '6px', 'margin': '3px'}),
+        
+        html.Div([
+            html.P("Mean Accuracy", style={'fontSize': 'clamp(9px, 1.8vw, 11px)', 'color': '#718096', 'marginBottom': '3px'}),
+            html.P(f"{metrics['mean_accuracy']:.1f}%" if metrics['verified_predictions'] > 0 else "N/A", 
+                   style={'fontSize': 'clamp(14px, 2.8vw, 16px)', 'color': '#667eea', 'fontWeight': 'bold'})
+        ], style={'flex': '1', 'textAlign': 'center', 'padding': '10px', 'background': '#f7fafc', 'borderRadius': '6px', 'margin': '3px'}),
+        
+        html.Div([
+            html.P("Mean Error", style={'fontSize': 'clamp(9px, 1.8vw, 11px)', 'color': '#718096', 'marginBottom': '3px'}),
+            html.P(f"₹{metrics['mean_error']:.2f}" if metrics['verified_predictions'] > 0 else "N/A", 
+                   style={'fontSize': 'clamp(14px, 2.8vw, 16px)', 'color': '#ef4444', 'fontWeight': 'bold'})
+        ], style={'flex': '1', 'textAlign': 'center', 'padding': '10px', 'background': '#f7fafc', 'borderRadius': '6px', 'margin': '3px'}),
+    ], style={'display': 'flex', 'justifyContent': 'space-around', 'flexWrap': 'wrap', 'marginBottom': '15px'})
+    
+    # Create history table
+    if history_df.empty:
+        table_content = html.P("No detailed history available", style={'textAlign': 'center', 'color': '#718096', 'padding': '10px'})
+    else:
+        # Split into past (verifiable) and future (pending) predictions
+        from datetime import datetime
+        today = pd.Timestamp(datetime.now().date())
+        
+        # Sort by target_date first to ensure proper ordering
+        history_df = history_df.sort_values('target_date')
+        
+        # Filter out weekends (only show trading days)
+        history_df['is_trading_day'] = history_df['target_date'].dt.weekday < 5  # Monday=0 to Friday=4
+        history_df = history_df[history_df['is_trading_day']].copy()
+        
+        # Group by target_date first to remove duplicates
+        history_grouped = history_df.groupby('target_date').agg({
+            'predicted_price': 'mean',
+            'actual_price': 'first',
+            'error': 'mean',
+            'accuracy': 'mean'
+        }).reset_index()
+        
+        # Filter to show current month only
+        current_month_start = pd.Timestamp(today.year, today.month, 1)
+        current_month_end = (current_month_start + pd.DateOffset(months=1)) - pd.DateOffset(days=1)
+        
+        display_df = history_grouped[
+            (history_grouped['target_date'] >= current_month_start) & 
+            (history_grouped['target_date'] <= current_month_end)
+        ].copy()
+        
+        if not display_df.empty:
+            past_count = len(display_df[display_df['target_date'] <= today])
+            future_count = len(display_df[display_df['target_date'] > today])
+            all_future = future_count == len(display_df)
+            
+            if past_count > 0 and future_count > 0:
+                table_title = f"Current Month Predictions ({past_count} Past + {future_count} Future)"
+            elif past_count > 0:
+                table_title = f"Current Month Predictions ({past_count} Verified)"
+            else:
+                table_title = f"Current Month Predictions ({future_count} Upcoming)"
+        else:
+            table_title = "Current Month Predictions"
+            all_future = False
+        
+        if not display_df.empty:
+            display_df = display_df[['target_date', 'predicted_price', 'actual_price', 'error', 'accuracy']].copy()
+            display_df['target_date'] = display_df['target_date'].dt.strftime('%Y-%m-%d')
+        
+        # Create table with title
+        table_title_elem = html.Div(table_title, style={
+            'fontSize': 'clamp(11px, 2.2vw, 13px)',
+            'color': '#667eea',
+            'fontWeight': '600',
+            'marginBottom': '10px',
+            'marginTop': '10px'
+        })
+        
+        # Create table header
+        table_header = html.Tr([
+            html.Th("Date", style={'padding': '8px', 'textAlign': 'left', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#4a5568', 'fontWeight': '600'}),
+            html.Th("Predicted", style={'padding': '8px', 'textAlign': 'right', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#4a5568', 'fontWeight': '600'}),
+            html.Th("Actual", style={'padding': '8px', 'textAlign': 'right', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#4a5568', 'fontWeight': '600'}),
+            html.Th("Error", style={'padding': '8px', 'textAlign': 'right', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#4a5568', 'fontWeight': '600'}),
+            html.Th("Accuracy", style={'padding': '8px', 'textAlign': 'right', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#4a5568', 'fontWeight': '600'}),
+        ])
+        
+        # Create table rows
+        table_rows = []
+        for _, row in display_df.iterrows():
+            accuracy_color = '#10b981' if row['accuracy'] and row['accuracy'] >= 90 else '#f59e0b' if row['accuracy'] and row['accuracy'] >= 80 else '#ef4444' if row['accuracy'] else '#9ca3af'
+            
+            table_rows.append(html.Tr([
+                html.Td(row['target_date'], style={'padding': '8px', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#4a5568'}),
+                html.Td(f"₹{row['predicted_price']:.2f}", style={'padding': '8px', 'textAlign': 'right', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#667eea', 'fontWeight': '600'}),
+                html.Td(f"₹{row['actual_price']:.2f}" if pd.notna(row['actual_price']) else "Pending", 
+                        style={'padding': '8px', 'textAlign': 'right', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#4a5568'}),
+                html.Td(f"₹{row['error']:.2f}" if pd.notna(row['error']) else "-", 
+                        style={'padding': '8px', 'textAlign': 'right', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#ef4444'}),
+                html.Td(f"{row['accuracy']:.1f}%" if pd.notna(row['accuracy']) else "-", 
+                        style={'padding': '8px', 'textAlign': 'right', 'fontSize': 'clamp(10px, 2vw, 12px)', 'color': accuracy_color, 'fontWeight': '600'}),
+            ], style={'borderBottom': '1px solid #e2e8f0'}))
+        
+        table_elem = html.Table([
+            html.Thead(table_header, style={'borderBottom': '2px solid #cbd5e0'}),
+            html.Tbody(table_rows)
+        ], style={'width': '100%', 'borderCollapse': 'collapse', 'marginTop': '5px'})
+        
+        table_content = html.Div([table_title_elem, table_elem])
+        
+        # Add info message if all predictions are future
+        if all_future:
+            info_message = html.P(
+                "ℹ️ All predictions are for future dates. Accuracy will be calculated once actual prices become available.",
+                style={
+                    'textAlign': 'center',
+                    'color': '#667eea',
+                    'fontSize': 'clamp(10px, 2vw, 12px)',
+                    'marginTop': '15px',
+                    'padding': '10px',
+                    'background': '#f0f4ff',
+                    'borderRadius': '6px',
+                    'border': '1px solid #cbd5e0'
+                }
+            )
+            table_content = html.Div([table_content, info_message])
+    
+    return html.Div([
+        accuracy_cards,
+        table_content
+    ])
+
 # Callback to render tab content
 @app.callback(
     Output('tabs-content', 'children'),
@@ -428,7 +691,14 @@ def render_tab_content(tab, selected_stock, timeframe):
             else:
                 # Filter by timeframe
                 latest_date = stock_df['Date'].max()
-                if timeframe == '1M':
+                if timeframe == 'TODAY':
+                    # For today, get last 2 trading days to calculate daily return
+                    unique_dates = sorted(stock_df['Date'].unique())
+                    if len(unique_dates) >= 2:
+                        start_date = unique_dates[-2]  # Yesterday or last trading day
+                    else:
+                        start_date = latest_date
+                elif timeframe == '1M':
                     start_date = latest_date - pd.DateOffset(months=1)
                 elif timeframe == '3M':
                     start_date = latest_date - pd.DateOffset(months=3)
@@ -450,32 +720,43 @@ def render_tab_content(tab, selected_stock, timeframe):
                 earliest_close = stock_df['Close'].iloc[0]
                 pct_change = ((latest_close - earliest_close) / earliest_close) * 100 if earliest_close != 0 else 0
                 
-                days = (stock_df['Date'].max() - stock_df['Date'].min()).days
-                years = days / 365.25
-                annualized_return = (((latest_close / earliest_close) ** (1 / years)) - 1) * 100 if years > 0 and earliest_close != 0 else 0
+                # For TODAY timeframe, don't calculate annualized return (doesn't make sense for 1 day)
+                if timeframe == 'TODAY':
+                    annualized_return = 0  # Not applicable for single day
+                else:
+                    days = (stock_df['Date'].max() - stock_df['Date'].min()).days
+                    years = days / 365.25
+                    annualized_return = (((latest_close / earliest_close) ** (1 / years)) - 1) * 100 if years > 0 and earliest_close != 0 else 0
                 
                 timeframe_labels = {
-                    '1M': '1 Month', '3M': '3 Months', '6M': '6 Months',
+                    'TODAY': 'Today', '1M': '1 Month', '3M': '3 Months', '6M': '6 Months',
                     '1Y': '1 Year', '3Y': '3 Years', '5Y': '5 Years', 'ALL': 'All Time'
                 }
                 
-                stock_info_content = html.Div([
+                # Build metrics list conditionally
+                metrics_divs = [
                     html.Div([
-                        html.Div([
-                            html.Div("Latest Close", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': 'black', 'marginBottom': '4px'}),
-                            html.Div(f"₹{latest_close:.2f}", style={'fontSize': 'clamp(18px, 4vw, 24px)', 'fontWeight': '700', 'color': "black"}),
-                        ], style={'textAlign': 'center', 'padding': '15px', 'background': 'white', 'borderRadius': '10px', 'color': 'black', 'boxShadow': '0 4px 12px rgba(102, 126, 234, 0.3)'}),
-                        
-                        html.Div([
-                            html.Div(f"{timeframe_labels.get(timeframe, timeframe)} Return", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#718096', 'marginBottom': '4px'}),
-                            html.Div(f"{pct_change:+.2f}%", style={'fontSize': 'clamp(18px, 4vw, 24px)', 'fontWeight': '700', 'color': '#10b981' if pct_change >= 0 else '#ef4444'}),
-                        ], style={'textAlign': 'center', 'padding': '15px', 'background': 'white', 'borderRadius': '10px', 'boxShadow': '0 4px 12px rgba(0,0,0,0.08)', 'border': '1px solid #e2e8f0'}),
-                        
+                        html.Div("Latest Close", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': 'black', 'marginBottom': '4px'}),
+                        html.Div(f"₹{latest_close:.2f}", style={'fontSize': 'clamp(18px, 4vw, 24px)', 'fontWeight': '700', 'color': "black"}),
+                    ], style={'textAlign': 'center', 'padding': '15px', 'background': 'white', 'borderRadius': '10px', 'color': 'black', 'boxShadow': '0 4px 12px rgba(102, 126, 234, 0.3)'}),
+                    
+                    html.Div([
+                        html.Div(f"{timeframe_labels.get(timeframe, timeframe)} Return", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#718096', 'marginBottom': '4px'}),
+                        html.Div(f"{pct_change:+.2f}%", style={'fontSize': 'clamp(18px, 4vw, 24px)', 'fontWeight': '700', 'color': '#10b981' if pct_change >= 0 else '#ef4444'}),
+                    ], style={'textAlign': 'center', 'padding': '15px', 'background': 'white', 'borderRadius': '10px', 'boxShadow': '0 4px 12px rgba(0,0,0,0.08)', 'border': '1px solid #e2e8f0'}),
+                ]
+                
+                # Only show annualized return for timeframes other than TODAY
+                if timeframe != 'TODAY':
+                    metrics_divs.append(
                         html.Div([
                             html.Div("Annualized Return", style={'fontSize': 'clamp(10px, 2vw, 12px)', 'color': '#718096', 'marginBottom': '4px'}),
                             html.Div(f"{annualized_return:+.2f}%", style={'fontSize': 'clamp(18px, 4vw, 24px)', 'fontWeight': '700', 'color': '#10b981' if annualized_return >= 0 else '#ef4444'}),
-                        ], style={'textAlign': 'center', 'padding': '15px', 'background': 'white', 'borderRadius': '10px', 'boxShadow': '0 4px 12px rgba(0,0,0,0.08)', 'border': '1px solid #e2e8f0'}),
-                    ], style={'display': 'grid', 'gridTemplateColumns': 'repeat(auto-fit, minmax(150px, 1fr))', 'gap': '15px', 'marginBottom': '20px'}),
+                        ], style={'textAlign': 'center', 'padding': '15px', 'background': 'white', 'borderRadius': '10px', 'boxShadow': '0 4px 12px rgba(0,0,0,0.08)', 'border': '1px solid #e2e8f0'})
+                    )
+                
+                stock_info_content = html.Div([
+                    html.Div(metrics_divs, style={'display': 'grid', 'gridTemplateColumns': 'repeat(auto-fit, minmax(150px, 1fr))', 'gap': '15px', 'marginBottom': '20px'}),
                     
                     html.Div([
                         html.Div([
@@ -714,25 +995,9 @@ def render_tab_content(tab, selected_stock, timeframe):
         if stock_df is None or stock_df.empty:
             return html.Div("No data available for this stock")
         
-        # Apply timeframe filter
-        if timeframe != 'ALL':
-            stock_df_filtered = stock_df.copy()
-            latest_date = stock_df['Date'].max()
-            if timeframe == '1M':
-                start_date = latest_date - pd.DateOffset(months=1)
-            elif timeframe == '3M':
-                start_date = latest_date - pd.DateOffset(months=3)
-            elif timeframe == '6M':
-                start_date = latest_date - pd.DateOffset(months=6)
-            elif timeframe == '1Y':
-                start_date = latest_date - pd.DateOffset(years=1)
-            elif timeframe == '3Y':
-                start_date = latest_date - pd.DateOffset(years=3)
-            elif timeframe == '5Y':
-                start_date = latest_date - pd.DateOffset(years=5)
-            stock_df_filtered = stock_df_filtered[stock_df_filtered['Date'] >= start_date]
-        else:
-            stock_df_filtered = stock_df
+        # For Predictive Analysis, always use ALL data regardless of timeframe
+        # Technical indicators and LSTM need sufficient historical data to be accurate
+        stock_df_filtered = stock_df
         
         # Calculate technical indicators
         df_with_indicators = pred.calculate_moving_averages(stock_df_filtered, [20, 50, 200])
@@ -762,7 +1027,70 @@ def render_tab_content(tab, selected_stock, timeframe):
                     epochs=20,  # Reduced from 50 for faster training
                     batch_size=32
                 )
-                if lstm_results:
+                if lstm_results and lstm_results.get('success'):
+                    # Save predictions to tracker
+                    from datetime import datetime
+                    prediction_date = datetime.now()
+                    model_info = {
+                        'rmse': lstm_results['metrics']['rmse'],
+                        'mae': lstm_results['metrics']['mae'],
+                        'train_samples': lstm_results['training_info']['train_samples']
+                    }
+                    
+                    # Perform proper backtesting: Train on historical data and predict on validation period
+                    # This gives us real past predictions to compare with actual prices
+                    last_date = df_with_indicators['Date'].max()
+                    backtest_start = last_date - pd.DateOffset(months=2)  # Last 2 months for validation
+                    
+                    # Split data: everything before backtest_start for training
+                    train_cutoff = backtest_start - pd.DateOffset(days=1)
+                    backtest_df = df_with_indicators[df_with_indicators['Date'] <= train_cutoff].copy()
+                    
+                    if len(backtest_df) >= 100:  # Need sufficient data for backtesting
+                        logger.info(f"Running backtest for {selected_stock} from {backtest_start}")
+                        
+                        # Train model on historical data only
+                        backtest_results = lstm_model.train_lstm_model(
+                            backtest_df,
+                            seq_length=30,
+                            forecast_days=60,  # Predict next 60 days (covers our 2-month validation period)
+                            epochs=20,
+                            batch_size=32
+                        )
+                        
+                        if backtest_results and backtest_results.get('success'):
+                            # Save backtest predictions
+                            backtest_model_info = {
+                                'type': 'backtest',
+                                'rmse': backtest_results['metrics']['rmse'],
+                                'mae': backtest_results['metrics']['mae'],
+                                'train_samples': backtest_results['training_info']['train_samples']
+                            }
+                            
+                            for target_date, predicted_price in zip(backtest_results['forecast_dates'], backtest_results['forecast_values']):
+                                # Only save predictions within our validation window
+                                if target_date >= backtest_start and target_date <= last_date:
+                                    if target_date.weekday() < 5:  # Trading days only
+                                        prediction_tracker.save_prediction(
+                                            ticker=selected_stock,
+                                            prediction_date=train_cutoff,
+                                            target_date=target_date,
+                                            predicted_price=predicted_price,
+                                            model_info=backtest_model_info
+                                        )
+                    
+                    # Save future forecasted values (only for trading days - weekdays)
+                    for target_date, predicted_price in zip(lstm_results['forecast_dates'], lstm_results['forecast_values']):
+                        # Skip weekends (Saturday=5, Sunday=6)
+                        if target_date.weekday() < 5:  # Monday=0 to Friday=4
+                            prediction_tracker.save_prediction(
+                                ticker=selected_stock,
+                                prediction_date=prediction_date,
+                                target_date=target_date,
+                                predicted_price=predicted_price,
+                                model_info=model_info
+                            )
+                    
                     lstm_charts = lstm_model.create_lstm_charts(
                         df_with_indicators,
                         lstm_results,
@@ -915,13 +1243,49 @@ def render_tab_content(tab, selected_stock, timeframe):
                                 'padding': '15px'
                             })
                         ]) if lstm_results and 'error' in lstm_results else html.Div([
-                            html.P("🔄 Training LSTM model... This may take 1-2 minutes.", style={
+                            html.Div("🧠", style={
+                                'fontSize': '48px',
+                                'textAlign': 'center',
+                                'marginBottom': '15px'
+                            }),
+                            html.P("Training LSTM model and running backtests...", style={
                                 'textAlign': 'center',
                                 'color': '#667eea',
+                                'fontSize': 'clamp(13px, 2.8vw, 16px)',
+                                'fontWeight': '600',
+                                'marginBottom': '10px'
+                            }),
+                            html.P("This may take 1-2 minutes. Please wait...", style={
+                                'textAlign': 'center',
+                                'color': '#718096',
                                 'fontSize': 'clamp(11px, 2.2vw, 13px)',
-                                'padding': '15px'
+                                'marginBottom': '15px'
+                            }),
+                            html.Ul([
+                                html.Li("Training LSTM neural network", style={'marginBottom': '5px'}),
+                                html.Li("Running 2-month backtest validation", style={'marginBottom': '5px'}),
+                                html.Li("Generating 30-day forecasts", style={'marginBottom': '5px'})
+                            ], style={
+                                'textAlign': 'left',
+                                'color': '#4a5568',
+                                'fontSize': 'clamp(11px, 2.2vw, 13px)',
+                                'maxWidth': '400px',
+                                'margin': '0 auto 15px',
+                                'listStyle': 'none',
+                                'paddingLeft': '0'
+                            }),
+                            html.P("💡 Tip: LSTM networks learn patterns from historical price movements to predict future trends", style={
+                                'textAlign': 'center',
+                                'color': '#718096',
+                                'fontSize': 'clamp(10px, 2vw, 12px)',
+                                'fontStyle': 'italic',
+                                'padding': '12px',
+                                'background': '#f7fafc',
+                                'borderRadius': '8px',
+                                'maxWidth': '450px',
+                                'margin': '0 auto'
                             })
-                        ]) if lstm_model.is_lstm_available() else html.Div([
+                        ], style={'padding': '30px 20px'}) if lstm_model.is_lstm_available() else html.Div([
                             html.P("⚠️ TensorFlow not available.", style={
                                 'textAlign': 'center',
                                 'color': '#ef4444',
@@ -930,6 +1294,42 @@ def render_tab_content(tab, selected_stock, timeframe):
                             })
                         ])
                     ])
+                ], style={
+                    'padding': '15px',
+                    'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                    'borderRadius': '12px',
+                    'boxShadow': '0 8px 20px rgba(102, 126, 234, 0.15), 0 2px 4px rgba(0,0,0,0.1)',
+                    'border': '1px solid rgba(102, 126, 234, 0.1)',
+                    'marginBottom': '15px'
+                })
+            ], style={
+                'maxWidth': '1200px',
+                'marginLeft': 'auto',
+                'marginRight': 'auto',
+            }),
+            
+            # Prediction History & Accuracy Section
+            html.Div([
+                html.Div([
+                    html.H4("📊 Prediction History & Accuracy", style={
+                        'fontSize': 'clamp(14px, 3vw, 18px)',
+                        'color': '#667eea',
+                        'fontWeight': '600',
+                        'marginBottom': '10px'
+                    }),
+                    html.P([
+                        html.Strong("What it shows: "),
+                        "Historical record of LSTM predictions vs actual prices. This tracks how accurate our model has been over time, helping you understand prediction reliability."
+                    ], style={
+                        'fontSize': 'clamp(10px, 2vw, 12px)',
+                        'color': '#4a5568',
+                        'marginBottom': '12px',
+                        'lineHeight': '1.5'
+                    }),
+                    
+                    # Get prediction history and accuracy
+                    html.Div(id='prediction-history-content', children=create_prediction_history_ui(selected_stock))
+                    
                 ], style={
                     'padding': '15px',
                     'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
@@ -1410,8 +1810,107 @@ def render_tab_content(tab, selected_stock, timeframe):
                 })
             ])
 
+    elif tab == 'tab-fundamentals':
+        # Fundamentals tab
+        
+        # Create top/bottom tables section
+        tables_section = html.Div([
+            html.Div([
+                html.H2("📈 Fundamental Rankings", style={
+                    'textAlign': 'center',
+                    'color': '#667eea',
+                    'fontSize': 'clamp(20px, 4.5vw, 28px)',
+                    'fontWeight': '700',
+                    'marginBottom': '30px'
+                }),
+                fundamentals.create_top_bottom_tables()
+            ], style={
+                'maxWidth': '1400px',
+                'marginLeft': 'auto',
+                'marginRight': 'auto',
+                'padding': '30px 20px',
+                'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                'borderRadius': '15px',
+                'boxShadow': '0 10px 30px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1)',
+                'border': '1px solid rgba(102, 126, 234, 0.15)',
+                'marginBottom': '30px'
+            })
+        ])
+        
+        if not selected_stock:
+            return html.Div([
+                tables_section,
+                html.Div([
+                    html.Div("💼", style={'fontSize': '60px', 'textAlign': 'center', 'marginBottom': '20px'}),
+                    html.H3("Individual Stock Analysis", style={
+                        'textAlign': 'center', 
+                        'marginBottom': '15px', 
+                        'fontSize': 'clamp(18px, 4vw, 26px)', 
+                        'color': '#667eea',
+                        'fontWeight': '700'
+                    }),
+                    html.P("Please select a stock above to view detailed fundamental analysis", style={
+                        'textAlign': 'center', 
+                        'fontSize': 'clamp(14px, 3vw, 18px)', 
+                        'color': '#718096'
+                    })
+                ], style={
+                    'maxWidth': '900px', 
+                    'marginLeft': 'auto', 
+                    'marginRight': 'auto',
+                    'margin': '40px auto',
+                    'padding': '50px 40px',
+                    'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                    'borderRadius': '15px',
+                    'boxShadow': '0 10px 30px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1)',
+                    'border': '1px solid rgba(102, 126, 234, 0.15)'
+                })
+            ])
+        
+        # Fetch fundamental data
+        fundamental_data = fundamentals.get_fundamental_data(selected_stock)
+        
+        return html.Div([
+            tables_section,
+            html.Div([
+                html.H2(f"📊 {selected_stock} - Detailed Analysis", style={
+                    'textAlign': 'center',
+                    'color': '#667eea',
+                    'fontSize': 'clamp(18px, 4vw, 24px)',
+                    'fontWeight': '700',
+                    'marginBottom': '30px'
+                }),
+                fundamentals.create_fundamentals_ui(selected_stock, fundamental_data)
+            ], style={
+                'maxWidth': '1200px',
+                'marginLeft': 'auto',
+                'marginRight': 'auto',
+                'padding': '30px 20px',
+                'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                'borderRadius': '15px',
+                'boxShadow': '0 10px 30px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1)',
+                'border': '1px solid rgba(102, 126, 234, 0.15)'
+            })
+        ], style={
+            'maxWidth': '1400px',
+            'marginLeft': 'auto',
+            'marginRight': 'auto',
+            'marginTop': '20px'
+        })
+    
     # No data case
     return html.Div("No data available", style={"textAlign": "center", "padding": "20px"})
+
+
+# Callback to update the latest data date display
+@app.callback(
+    Output('latest-data-date', 'children'),
+    Input('tabs', 'value')  # Triggers on any tab change
+)
+def update_latest_date(tab):
+    """Update the latest data date whenever tabs change (ensures fresh data display)."""
+    current_date = get_latest_date()
+    return f"Latest Data: {current_date}"
 
 
 # Callback to toggle timeframe selector visibility based on active tab
@@ -1420,8 +1919,8 @@ def render_tab_content(tab, selected_stock, timeframe):
     Input('tabs', 'value')
 )
 def toggle_timeframe_visibility(tab):
-    """Hide timeframe selector on Predictive Analysis and Backtesting tabs, show on Price Analysis tab."""
-    if tab in ['tab-prediction', 'tab-backtesting']:
+    """Hide timeframe selector on Predictive Analysis, Backtesting, and Fundamentals tabs, show on Price Analysis tab."""
+    if tab in ['tab-prediction', 'tab-backtesting', 'tab-fundamentals']:
         return {'display': 'none'}
     else:
         return {'width': '15%', 'display': 'block'}
@@ -1436,7 +1935,7 @@ def toggle_timeframe_visibility(tab):
 def update_top_performers(timeframe):
     """Update the top performers heading and table based on selected timeframe."""
     timeframe_labels = {
-        '1M': '1 Month', '3M': '3 Months', '6M': '6 Months',
+        'TODAY': 'Today', '1M': '1 Month', '3M': '3 Months', '6M': '6 Months',
         '1Y': '1 Year', '3Y': '3 Years', '5Y': '5 Years', 'ALL': 'All Time'
     }
     heading = f"Market Performers ({timeframe_labels.get(timeframe, timeframe)})"
@@ -1453,7 +1952,15 @@ def calculate_top_performers(timeframe, top_n=10):
     
     # Filter dates based on timeframe
     latest_date = dates.max()
-    if timeframe == '1M':
+    if timeframe == 'TODAY':
+        # For today, we need yesterday's close and today's close
+        # Get the last 2 trading days
+        unique_dates = sorted(dates.dropna().unique())
+        if len(unique_dates) >= 2:
+            start_date = unique_dates[-2]  # Yesterday (or last trading day)
+        else:
+            start_date = latest_date
+    elif timeframe == '1M':
         start_date = latest_date - pd.DateOffset(months=1)
     elif timeframe == '3M':
         start_date = latest_date - pd.DateOffset(months=3)
