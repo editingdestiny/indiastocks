@@ -1,2 +1,5 @@
-# Run updater every weekday at 18:15
+# Run price updater every weekday at 18:15 (6:15 PM)
 15 18 * * 1-5 root cd /app && /usr/local/bin/python update_daily.py >> /app/logs/update_daily.log 2>&1
+
+# Generate predictions every day at midnight (00:00)
+0 0 * * * root cd /app && /usr/local/bin/python generate_predictions.py >> /app/logs/predictions.log 2>&1

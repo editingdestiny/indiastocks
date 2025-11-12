@@ -592,9 +592,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-10",
       "predicted_price": 1138.51708984375,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1041.300048828125,
+      "error": 97.217041015625,
+      "accuracy": 90.66387818525192,
       "model_info": {
         "rmse": 102.03533002877373,
         "mae": 77.87977485337962,
@@ -605,9 +605,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-11",
       "predicted_price": 1144.2274169921875,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1044.199951171875,
+      "error": 100.0274658203125,
+      "accuracy": 90.42065978761494,
       "model_info": {
         "rmse": 102.03533002877373,
         "mae": 77.87977485337962,
@@ -618,9 +618,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-12",
       "predicted_price": 1150.44482421875,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1070.800048828125,
+      "error": 79.644775390625,
+      "accuracy": 92.56212441549778,
       "model_info": {
         "rmse": 102.03533002877373,
         "mae": 77.87977485337962,
@@ -1440,9 +1440,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-10",
       "predicted_price": 1113.6419677734375,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1041.300048828125,
+      "error": 72.3419189453125,
+      "accuracy": 93.05273066809843,
       "model_info": {
         "rmse": 99.46489796628525,
         "mae": 70.62470077472145,
@@ -1453,9 +1453,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-11",
       "predicted_price": 1116.643310546875,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1044.199951171875,
+      "error": 72.443359375,
+      "accuracy": 93.06230963775674,
       "model_info": {
         "rmse": 99.46489796628525,
         "mae": 70.62470077472145,
@@ -1466,9 +1466,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-12",
       "predicted_price": 1119.816650390625,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1070.800048828125,
+      "error": 49.0166015625,
+      "accuracy": 95.42243188948831,
       "model_info": {
         "rmse": 99.46489796628525,
         "mae": 70.62470077472145,
@@ -2288,9 +2288,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-10",
       "predicted_price": 1143.8265380859375,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1041.300048828125,
+      "error": 102.5264892578125,
+      "accuracy": 90.15399169785928,
       "model_info": {
         "rmse": 101.87353778093954,
         "mae": 77.95665619831563,
@@ -2301,9 +2301,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-11",
       "predicted_price": 1149.9688720703125,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1044.199951171875,
+      "error": 105.7689208984375,
+      "accuracy": 89.87081729129214,
       "model_info": {
         "rmse": 101.87353778093954,
         "mae": 77.95665619831563,
@@ -2314,9 +2314,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-12",
       "predicted_price": 1156.6368408203125,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1070.800048828125,
+      "error": 85.8367919921875,
+      "accuracy": 91.98386364605356,
       "model_info": {
         "rmse": 101.87353778093954,
         "mae": 77.95665619831563,
@@ -3136,9 +3136,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-10",
       "predicted_price": 1147.737060546875,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1041.300048828125,
+      "error": 106.43701171875,
+      "accuracy": 89.77844936831283,
       "model_info": {
         "rmse": 90.501129731383,
         "mae": 67.25198219745604,
@@ -3149,9 +3149,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-11",
       "predicted_price": 1155.93115234375,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1044.199951171875,
+      "error": 111.731201171875,
+      "accuracy": 89.29982700664922,
       "model_info": {
         "rmse": 90.501129731383,
         "mae": 67.25198219745604,
@@ -3162,9 +3162,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-12",
       "predicted_price": 1165.02783203125,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1070.800048828125,
+      "error": 94.227783203125,
+      "accuracy": 91.2002447790092,
       "model_info": {
         "rmse": 90.501129731383,
         "mae": 67.25198219745604,
@@ -3984,9 +3984,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-10",
       "predicted_price": 1112.2032470703125,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1041.300048828125,
+      "error": 70.9031982421875,
+      "accuracy": 93.19089648348891,
       "model_info": {
         "rmse": 86.68337388848545,
         "mae": 59.564244857405555,
@@ -3997,9 +3997,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-11",
       "predicted_price": 1116.1217041015625,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1044.199951171875,
+      "error": 71.9217529296875,
+      "accuracy": 93.11226237379422,
       "model_info": {
         "rmse": 86.68337388848545,
         "mae": 59.564244857405555,
@@ -4010,9 +4010,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-12",
       "predicted_price": 1120.2178955078125,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1070.800048828125,
+      "error": 49.4178466796875,
+      "accuracy": 95.38496036362997,
       "model_info": {
         "rmse": 86.68337388848545,
         "mae": 59.564244857405555,
@@ -4832,9 +4832,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-10",
       "predicted_price": 1148.486083984375,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1041.300048828125,
+      "error": 107.18603515625,
+      "accuracy": 89.7065178017732,
       "model_info": {
         "rmse": 91.76976449406264,
         "mae": 68.82304888116948,
@@ -4845,9 +4845,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-11",
       "predicted_price": 1156.795654296875,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1044.199951171875,
+      "error": 112.595703125,
+      "accuracy": 89.21703616260113,
       "model_info": {
         "rmse": 91.76976449406264,
         "mae": 68.82304888116948,
@@ -4858,9 +4858,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-12",
       "predicted_price": 1166.0103759765625,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1070.800048828125,
+      "error": 95.2103271484375,
+      "accuracy": 91.1084868503102,
       "model_info": {
         "rmse": 91.76976449406264,
         "mae": 68.82304888116948,
@@ -5680,9 +5680,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-10",
       "predicted_price": 1123.1151123046875,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1041.300048828125,
+      "error": 81.8150634765625,
+      "accuracy": 92.14298860653692,
       "model_info": {
         "rmse": 80.54583178954223,
         "mae": 54.49004616910037,
@@ -5693,9 +5693,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-11",
       "predicted_price": 1127.9532470703125,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1044.199951171875,
+      "error": 83.7532958984375,
+      "accuracy": 91.97918982811255,
       "model_info": {
         "rmse": 80.54583178954223,
         "mae": 54.49004616910037,
@@ -5706,9 +5706,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-12",
       "predicted_price": 1133.1983642578125,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1070.800048828125,
+      "error": 62.3983154296875,
+      "accuracy": 94.17273883224271,
       "model_info": {
         "rmse": 80.54583178954223,
         "mae": 54.49004616910037,
@@ -6528,9 +6528,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-10",
       "predicted_price": 1128.942138671875,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1041.300048828125,
+      "error": 87.64208984375,
+      "accuracy": 91.58339712531637,
       "model_info": {
         "rmse": 88.53834042075594,
         "mae": 63.95476597862987,
@@ -6541,9 +6541,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-11",
       "predicted_price": 1134.297119140625,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1044.199951171875,
+      "error": 90.09716796875,
+      "accuracy": 91.37165560411714,
       "model_info": {
         "rmse": 88.53834042075594,
         "mae": 63.95476597862987,
@@ -6554,9 +6554,9 @@
       "prediction_date": "2025-11-08",
       "target_date": "2025-11-12",
       "predicted_price": 1140.101806640625,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1070.800048828125,
+      "error": 69.3017578125,
+      "accuracy": 93.52803934886413,
       "model_info": {
         "rmse": 88.53834042075594,
         "mae": 63.95476597862987,
@@ -7376,9 +7376,9 @@
       "prediction_date": "2025-11-09",
       "target_date": "2025-11-10",
       "predicted_price": 1123.580322265625,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1041.300048828125,
+      "error": 82.2802734375,
+      "accuracy": 92.0983127264713,
       "model_info": {
         "rmse": 80.59671696366921,
         "mae": 53.277155374086,
@@ -7389,9 +7389,9 @@
       "prediction_date": "2025-11-09",
       "target_date": "2025-11-11",
       "predicted_price": 1128.7960205078125,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1044.199951171875,
+      "error": 84.5960693359375,
+      "accuracy": 91.89847986096936,
       "model_info": {
         "rmse": 80.59671696366921,
         "mae": 53.277155374086,
@@ -7402,9 +7402,9 @@
       "prediction_date": "2025-11-09",
       "target_date": "2025-11-12",
       "predicted_price": 1134.4415283203125,
-      "actual_price": null,
-      "error": null,
-      "accuracy": null,
+      "actual_price": 1070.800048828125,
+      "error": 63.6414794921875,
+      "accuracy": 94.05664208160654,
       "model_info": {
         "rmse": 80.59671696366921,
         "mae": 53.277155374086,
@@ -7630,6 +7630,1754 @@
         "rmse": 80.59671696366921,
         "mae": 53.277155374086,
         "train_samples": 1436
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-12",
+      "predicted_price": 965.296630859375,
+      "actual_price": 981.7000122070312,
+      "error": 16.40338134765625,
+      "accuracy": 98.32908412512101,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-15",
+      "predicted_price": 983.2000122070312,
+      "actual_price": 986.7000122070312,
+      "error": 3.5,
+      "accuracy": 99.64528225836632,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-16",
+      "predicted_price": 989.4058227539062,
+      "actual_price": 987.8499755859376,
+      "error": 1.5558471679686363,
+      "accuracy": 99.84250167470563,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-17",
+      "predicted_price": 995.739013671875,
+      "actual_price": 979.4500122070312,
+      "error": 16.28900146484375,
+      "accuracy": 98.33692365492557,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-18",
+      "predicted_price": 1002.1867065429688,
+      "actual_price": 978.9000244140624,
+      "error": 23.286682128906364,
+      "accuracy": 97.62113785390444,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-19",
+      "predicted_price": 1008.7432861328125,
+      "actual_price": 1030.699951171875,
+      "error": 21.9566650390625,
+      "accuracy": 97.86973260121935,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-22",
+      "predicted_price": 1028.8861083984375,
+      "actual_price": 1152.1500244140625,
+      "error": 123.263916015625,
+      "accuracy": 89.3014005638448,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-23",
+      "predicted_price": 1035.712158203125,
+      "actual_price": 1131.449951171875,
+      "error": 95.73779296875,
+      "accuracy": 91.53848626979995,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-24",
+      "predicted_price": 1042.587646484375,
+      "actual_price": 1095.25,
+      "error": 52.662353515625,
+      "accuracy": 95.1917504208514,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-25",
+      "predicted_price": 1049.47802734375,
+      "actual_price": 1079.550048828125,
+      "error": 30.072021484375,
+      "accuracy": 97.21439302262837,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-26",
+      "predicted_price": 1056.3636474609375,
+      "actual_price": 1047.4000244140625,
+      "error": 8.963623046875,
+      "accuracy": 99.14420251690471,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-29",
+      "predicted_price": 1077.1260986328125,
+      "actual_price": 1035.3499755859375,
+      "error": 41.776123046875,
+      "accuracy": 95.96502399845689,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-30",
+      "predicted_price": 1084.0675048828125,
+      "actual_price": 1026.8499755859375,
+      "error": 57.217529296875,
+      "accuracy": 94.4278589222125,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-01",
+      "predicted_price": 1091.0513916015625,
+      "actual_price": 1064.699951171875,
+      "error": 26.3514404296875,
+      "accuracy": 97.52498904497145,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-02",
+      "predicted_price": 1098.05615234375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-03",
+      "predicted_price": 1105.059814453125,
+      "actual_price": 1070.300048828125,
+      "error": 34.759765625,
+      "accuracy": 96.75233448199329,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-06",
+      "predicted_price": 1125.9266357421875,
+      "actual_price": 1059.4000244140625,
+      "error": 66.526611328125,
+      "accuracy": 93.72035021757529,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-07",
+      "predicted_price": 1132.8555908203125,
+      "actual_price": 1060.699951171875,
+      "error": 72.1556396484375,
+      "accuracy": 93.19735618270568,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-08",
+      "predicted_price": 1139.771240234375,
+      "actual_price": 1045.0999755859375,
+      "error": 94.6712646484375,
+      "accuracy": 90.94141547603043,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-09",
+      "predicted_price": 1146.6558837890625,
+      "actual_price": 1051.5,
+      "error": 95.1558837890625,
+      "accuracy": 90.95046278753567,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-10",
+      "predicted_price": 1153.5184326171875,
+      "actual_price": 1064.300048828125,
+      "error": 89.2183837890625,
+      "accuracy": 91.61717751612444,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-13",
+      "predicted_price": 1173.87890625,
+      "actual_price": 1051.300048828125,
+      "error": 122.578857421875,
+      "accuracy": 88.34025951406427,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-14",
+      "predicted_price": 1180.6058349609375,
+      "actual_price": 1036.199951171875,
+      "error": 144.4058837890625,
+      "accuracy": 86.0638978388535,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-15",
+      "predicted_price": 1187.2999267578125,
+      "actual_price": 1043.800048828125,
+      "error": 143.4998779296875,
+      "accuracy": 86.25216792327276,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-16",
+      "predicted_price": 1193.95849609375,
+      "actual_price": 1060.300048828125,
+      "error": 133.658447265625,
+      "accuracy": 87.394280759173,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-17",
+      "predicted_price": 1200.5777587890625,
+      "actual_price": 1036.699951171875,
+      "error": 163.8778076171875,
+      "accuracy": 84.19235889497809,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-20",
+      "predicted_price": 1220.2498779296875,
+      "actual_price": 1034.0999755859375,
+      "error": 186.14990234375,
+      "accuracy": 81.99884858925033,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-21",
+      "predicted_price": 1226.8240966796875,
+      "actual_price": 1040.0,
+      "error": 186.8240966796875,
+      "accuracy": 82.03614455003006,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-22",
+      "predicted_price": 1233.4044189453125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-23",
+      "predicted_price": 1239.9808349609375,
+      "actual_price": 1044.699951171875,
+      "error": 195.2808837890625,
+      "accuracy": 81.30746693631895,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-24",
+      "predicted_price": 1246.5469970703125,
+      "actual_price": 1031.0999755859375,
+      "error": 215.447021484375,
+      "accuracy": 79.10512786483734,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-27",
+      "predicted_price": 1266.1688232421875,
+      "actual_price": 1017.0999755859376,
+      "error": 249.0688476562499,
+      "accuracy": 75.51186179974445,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-28",
+      "predicted_price": 1272.6817626953125,
+      "actual_price": 1004.2000122070312,
+      "error": 268.48175048828125,
+      "accuracy": 73.26411599037806,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-29",
+      "predicted_price": 1279.1767578125,
+      "actual_price": 1112.5999755859375,
+      "error": 166.5767822265625,
+      "accuracy": 85.02815154756436,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-30",
+      "predicted_price": 1285.6541748046875,
+      "actual_price": 1140.0999755859375,
+      "error": 145.55419921875,
+      "accuracy": 87.23320740850427,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-31",
+      "predicted_price": 1292.1116943359375,
+      "actual_price": 1140.0,
+      "error": 152.1116943359375,
+      "accuracy": 86.65686891790023,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-03",
+      "predicted_price": 1311.3958740234375,
+      "actual_price": 1105.199951171875,
+      "error": 206.1959228515625,
+      "accuracy": 81.34311147653173,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-04",
+      "predicted_price": 1317.8037109375,
+      "actual_price": 1086.4000244140625,
+      "error": 231.4036865234375,
+      "accuracy": 78.69995569557885,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-05",
+      "predicted_price": 1324.1986083984375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-06",
+      "predicted_price": 1330.577880859375,
+      "actual_price": 1058.699951171875,
+      "error": 271.8779296875,
+      "accuracy": 74.31964274801767,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-07",
+      "predicted_price": 1336.942138671875,
+      "actual_price": 1059.800048828125,
+      "error": 277.14208984375,
+      "accuracy": 73.8495869904705,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-10",
+      "predicted_price": 1355.94677734375,
+      "actual_price": 1041.300048828125,
+      "error": 314.646728515625,
+      "accuracy": 69.78327919318478,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 76.92198543341404,
+        "mae": 50.87828341397372,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-13",
+      "predicted_price": 1123.9249267578125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-14",
+      "predicted_price": 1125.48828125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-17",
+      "predicted_price": 1142.1973876953125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-18",
+      "predicted_price": 1149.821533203125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-19",
+      "predicted_price": 1157.9554443359375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-20",
+      "predicted_price": 1166.412353515625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-21",
+      "predicted_price": 1175.1024169921875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-24",
+      "predicted_price": 1201.8865966796875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-25",
+      "predicted_price": 1210.9193115234375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-26",
+      "predicted_price": 1219.9881591796875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-27",
+      "predicted_price": 1229.0457763671875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-28",
+      "predicted_price": 1238.092041015625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-01",
+      "predicted_price": 1265.2169189453125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-02",
+      "predicted_price": 1274.22900390625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-03",
+      "predicted_price": 1283.1864013671875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-04",
+      "predicted_price": 1292.16650390625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-05",
+      "predicted_price": 1301.0994873046875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-08",
+      "predicted_price": 1327.503173828125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-09",
+      "predicted_price": 1336.205810546875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-10",
+      "predicted_price": 1344.8905029296875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-11",
+      "predicted_price": 1353.55078125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-12",
+      "predicted_price": 1362.1812744140625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 93.6806101742549,
+        "mae": 70.85055135091146,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-12",
+      "predicted_price": 992.042724609375,
+      "actual_price": 981.7000122070312,
+      "error": 10.34271240234375,
+      "accuracy": 98.94644878539917,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-15",
+      "predicted_price": 1012.410888671875,
+      "actual_price": 986.7000122070312,
+      "error": 25.71087646484375,
+      "accuracy": 97.39425598999091,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-16",
+      "predicted_price": 1021.0630493164062,
+      "actual_price": 987.8499755859376,
+      "error": 33.213073730468636,
+      "accuracy": 96.6378423291686,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-17",
+      "predicted_price": 1030.195556640625,
+      "actual_price": 979.4500122070312,
+      "error": 50.74554443359375,
+      "accuracy": 94.81897556780392,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-18",
+      "predicted_price": 1039.6953125,
+      "actual_price": 978.9000244140624,
+      "error": 60.795288085937614,
+      "accuracy": 93.78942827973391,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-19",
+      "predicted_price": 1049.446044921875,
+      "actual_price": 1030.699951171875,
+      "error": 18.74609375,
+      "accuracy": 98.18122687124549,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-22",
+      "predicted_price": 1079.744384765625,
+      "actual_price": 1152.1500244140625,
+      "error": 72.4056396484375,
+      "accuracy": 93.71560663853128,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-23",
+      "predicted_price": 1090.1199951171875,
+      "actual_price": 1131.449951171875,
+      "error": 41.3299560546875,
+      "accuracy": 96.34716886841694,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-24",
+      "predicted_price": 1100.5640869140625,
+      "actual_price": 1095.25,
+      "error": 5.3140869140625,
+      "accuracy": 99.51480603386784,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-25",
+      "predicted_price": 1111.1260986328125,
+      "actual_price": 1079.550048828125,
+      "error": 31.5760498046875,
+      "accuracy": 97.07507309744796,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-26",
+      "predicted_price": 1121.8095703125,
+      "actual_price": 1047.4000244140625,
+      "error": 74.4095458984375,
+      "accuracy": 92.89578535764655,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-29",
+      "predicted_price": 1153.9365234375,
+      "actual_price": 1035.3499755859375,
+      "error": 118.5865478515625,
+      "accuracy": 88.54623550993463,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-30",
+      "predicted_price": 1164.6763916015625,
+      "actual_price": 1026.8499755859375,
+      "error": 137.826416015625,
+      "accuracy": 86.5777456013495,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-01",
+      "predicted_price": 1175.3709716796875,
+      "actual_price": 1064.699951171875,
+      "error": 110.6710205078125,
+      "accuracy": 89.60542635641139,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-02",
+      "predicted_price": 1186.0762939453125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-03",
+      "predicted_price": 1196.782958984375,
+      "actual_price": 1070.300048828125,
+      "error": 126.48291015625,
+      "accuracy": 88.18248113744023,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-06",
+      "predicted_price": 1229.027587890625,
+      "actual_price": 1059.4000244140625,
+      "error": 169.6275634765625,
+      "accuracy": 83.98833683524023,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-07",
+      "predicted_price": 1239.7574462890625,
+      "actual_price": 1060.699951171875,
+      "error": 179.0574951171875,
+      "accuracy": 83.11893057792994,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-08",
+      "predicted_price": 1250.488525390625,
+      "actual_price": 1045.0999755859375,
+      "error": 205.3885498046875,
+      "accuracy": 80.34747348553559,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-09",
+      "predicted_price": 1261.2293701171875,
+      "actual_price": 1051.5,
+      "error": 209.7293701171875,
+      "accuracy": 80.05426817715762,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-10",
+      "predicted_price": 1271.9688720703125,
+      "actual_price": 1064.300048828125,
+      "error": 207.6688232421875,
+      "accuracy": 80.48775592269806,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-13",
+      "predicted_price": 1304.2401123046875,
+      "actual_price": 1051.300048828125,
+      "error": 252.9400634765625,
+      "accuracy": 75.94025951406427,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-14",
+      "predicted_price": 1314.974365234375,
+      "actual_price": 1036.199951171875,
+      "error": 278.7744140625,
+      "accuracy": 73.09646523846828,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-15",
+      "predicted_price": 1325.695068359375,
+      "actual_price": 1043.800048828125,
+      "error": 281.89501953125,
+      "accuracy": 72.99338893040542,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-16",
+      "predicted_price": 1336.3988037109375,
+      "actual_price": 1060.300048828125,
+      "error": 276.0987548828125,
+      "accuracy": 73.96031857322227,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-17",
+      "predicted_price": 1347.085205078125,
+      "actual_price": 1036.699951171875,
+      "error": 310.38525390625,
+      "accuracy": 70.06026154863866,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-20",
+      "predicted_price": 1379.0635986328125,
+      "actual_price": 1034.0999755859375,
+      "error": 344.963623046875,
+      "accuracy": 66.64117288549272,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-21",
+      "predicted_price": 1389.6845703125,
+      "actual_price": 1040.0,
+      "error": 349.6845703125,
+      "accuracy": 66.37648362379808,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-22",
+      "predicted_price": 1400.3001708984375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-23",
+      "predicted_price": 1410.9178466796875,
+      "actual_price": 1044.699951171875,
+      "error": 366.2178955078125,
+      "accuracy": 64.9451600818959,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-24",
+      "predicted_price": 1421.5194091796875,
+      "actual_price": 1031.0999755859375,
+      "error": 390.41943359375,
+      "accuracy": 62.135637393271345,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-27",
+      "predicted_price": 1453.1925048828125,
+      "actual_price": 1017.0999755859376,
+      "error": 436.0925292968749,
+      "accuracy": 57.1239268739882,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-28",
+      "predicted_price": 1463.718505859375,
+      "actual_price": 1004.2000122070312,
+      "error": 459.51849365234375,
+      "accuracy": 54.24034175797172,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-29",
+      "predicted_price": 1474.215576171875,
+      "actual_price": 1112.5999755859375,
+      "error": 361.6156005859375,
+      "accuracy": 67.49814771517526,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-30",
+      "predicted_price": 1484.695068359375,
+      "actual_price": 1140.0999755859375,
+      "error": 344.5950927734375,
+      "accuracy": 69.77501095056704,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-31",
+      "predicted_price": 1495.156982421875,
+      "actual_price": 1140.0,
+      "error": 355.156982421875,
+      "accuracy": 68.84587873492325,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-03",
+      "predicted_price": 1526.39306640625,
+      "actual_price": 1105.199951171875,
+      "error": 421.193115234375,
+      "accuracy": 61.88987207357619,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-04",
+      "predicted_price": 1536.755615234375,
+      "actual_price": 1086.4000244140625,
+      "error": 450.3555908203125,
+      "accuracy": 58.546062159451196,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-05",
+      "predicted_price": 1547.0732421875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-06",
+      "predicted_price": 1557.352294921875,
+      "actual_price": 1058.699951171875,
+      "error": 498.65234375,
+      "accuracy": 52.89955920012637,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-07",
+      "predicted_price": 1567.577392578125,
+      "actual_price": 1059.800048828125,
+      "error": 507.77734375,
+      "accuracy": 52.087439105945,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-10",
+      "predicted_price": 1597.884765625,
+      "actual_price": 1041.300048828125,
+      "error": 556.584716796875,
+      "accuracy": 46.54905496035909,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 96.1791278744622,
+        "mae": 72.58993096785112,
+        "train_samples": 1405
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-13",
+      "predicted_price": 1102.0262451171875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-14",
+      "predicted_price": 1103.0185546875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-17",
+      "predicted_price": 1109.2310791015625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-18",
+      "predicted_price": 1111.920654296875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-19",
+      "predicted_price": 1114.7635498046875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-20",
+      "predicted_price": 1117.7418212890625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-21",
+      "predicted_price": 1120.77978515625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-24",
+      "predicted_price": 1130.0714111328125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-25",
+      "predicted_price": 1133.1787109375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-26",
+      "predicted_price": 1136.231689453125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-27",
+      "predicted_price": 1139.3382568359375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-28",
+      "predicted_price": 1142.40087890625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-01",
+      "predicted_price": 1151.6396484375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-02",
+      "predicted_price": 1154.813232421875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-03",
+      "predicted_price": 1158.01416015625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-04",
+      "predicted_price": 1160.9388427734375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-05",
+      "predicted_price": 1163.806396484375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-08",
+      "predicted_price": 1172.4866943359375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-09",
+      "predicted_price": 1175.4644775390625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-10",
+      "predicted_price": 1178.427490234375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-11",
+      "predicted_price": 1181.4239501953125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-12",
+      "predicted_price": 1184.3973388671875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 114.66558155836786,
+        "mae": 80.51500769721137,
+        "train_samples": 1438
       }
     }
   ],
@@ -11066,6 +12814,882 @@
         "rmse": 1359.2626752408103,
         "mae": 980.3168955297801,
         "train_samples": 1955
+      }
+    }
+  ],
+  "ACE.NS": [
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-12",
+      "predicted_price": 1167.0999755859375,
+      "actual_price": 1118.9000244140625,
+      "error": 48.199951171875,
+      "accuracy": 95.69220215209879,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-15",
+      "predicted_price": 1206.1041259765625,
+      "actual_price": 1120.9000244140625,
+      "error": 85.2041015625,
+      "accuracy": 92.39859936598364,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-16",
+      "predicted_price": 1221.8232421875,
+      "actual_price": 1112.199951171875,
+      "error": 109.623291015625,
+      "accuracy": 90.1435626840192,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-17",
+      "predicted_price": 1238.6590576171875,
+      "actual_price": 1134.300048828125,
+      "error": 104.3590087890625,
+      "accuracy": 90.79969987686428,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-18",
+      "predicted_price": 1256.5693359375,
+      "actual_price": 1145.0999755859375,
+      "error": 111.4693603515625,
+      "accuracy": 90.26553464953795,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-19",
+      "predicted_price": 1275.521728515625,
+      "actual_price": 1150.0,
+      "error": 125.521728515625,
+      "accuracy": 89.08506708559783,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-22",
+      "predicted_price": 1339.514892578125,
+      "actual_price": 1146.300048828125,
+      "error": 193.21484375,
+      "accuracy": 83.14447914858543,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-23",
+      "predicted_price": 1363.411865234375,
+      "actual_price": 1155.4000244140625,
+      "error": 208.0118408203125,
+      "accuracy": 81.99655215293929,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-24",
+      "predicted_price": 1388.7265625,
+      "actual_price": 1138.0999755859375,
+      "error": 250.6265869140625,
+      "accuracy": 77.97850871712475,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-25",
+      "predicted_price": 1415.559814453125,
+      "actual_price": 1114.0,
+      "error": 301.559814453125,
+      "accuracy": 72.929998702592,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-26",
+      "predicted_price": 1444.04833984375,
+      "actual_price": 1080.0999755859375,
+      "error": 363.9483642578125,
+      "accuracy": 66.30419660361754,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-29",
+      "predicted_price": 1541.6849365234375,
+      "actual_price": 1076.199951171875,
+      "error": 465.4849853515625,
+      "accuracy": 56.74735119206282,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-09-30",
+      "predicted_price": 1578.9620361328125,
+      "actual_price": 1072.5999755859375,
+      "error": 506.362060546875,
+      "accuracy": 52.7911549438307,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-01",
+      "predicted_price": 1619.1473388671875,
+      "actual_price": 1069.5999755859375,
+      "error": 549.54736328125,
+      "accuracy": 48.621225147261015,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-02",
+      "predicted_price": 1662.485595703125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-03",
+      "predicted_price": 1709.4266357421875,
+      "actual_price": 1076.800048828125,
+      "error": 632.6265869140625,
+      "accuracy": 41.24939095215067,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-06",
+      "predicted_price": 1876.65771484375,
+      "actual_price": 1091.5999755859375,
+      "error": 785.0577392578125,
+      "accuracy": 28.081920408946736,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-07",
+      "predicted_price": 1943.463134765625,
+      "actual_price": 1079.800048828125,
+      "error": 863.6630859375,
+      "accuracy": 20.01638758260773,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-08",
+      "predicted_price": 2017.2406005859375,
+      "actual_price": 1085.4000244140625,
+      "error": 931.840576171875,
+      "accuracy": 14.147728467675712,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-09",
+      "predicted_price": 2099.09521484375,
+      "actual_price": 1071.4000244140625,
+      "error": 1027.6951904296875,
+      "accuracy": 4.079226524964541,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-10",
+      "predicted_price": 2190.31494140625,
+      "actual_price": 1069.0,
+      "error": 1121.31494140625,
+      "accuracy": -4.893820524438719,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-13",
+      "predicted_price": 2541.040283203125,
+      "actual_price": 1081.4000244140625,
+      "error": 1459.6402587890625,
+      "accuracy": -34.976902703506305,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-14",
+      "predicted_price": 2693.14599609375,
+      "actual_price": 1082.800048828125,
+      "error": 1610.345947265625,
+      "accuracy": -48.720527765808995,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-15",
+      "predicted_price": 2869.98291015625,
+      "actual_price": 1075.300048828125,
+      "error": 1794.682861328125,
+      "accuracy": -66.90065840543689,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-16",
+      "predicted_price": 3078.021728515625,
+      "actual_price": 1076.800048828125,
+      "error": 2001.2216796875,
+      "accuracy": -85.848958854099,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-17",
+      "predicted_price": 3326.162841796875,
+      "actual_price": 1086.4000244140625,
+      "error": 2239.7628173828125,
+      "accuracy": -106.16373039855213,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-20",
+      "predicted_price": 4465.7421875,
+      "actual_price": 1112.5,
+      "error": 3353.2421875,
+      "accuracy": -201.41502808988764,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-21",
+      "predicted_price": 5077.78271484375,
+      "actual_price": 1117.0,
+      "error": 3960.78271484375,
+      "accuracy": -254.5911114452775,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-22",
+      "predicted_price": 5902.138671875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-23",
+      "predicted_price": 7060.556640625,
+      "actual_price": 1101.0,
+      "error": 5959.556640625,
+      "accuracy": -441.2857984218892,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-24",
+      "predicted_price": 8776.984375,
+      "actual_price": 1110.0999755859375,
+      "error": 7666.8843994140625,
+      "accuracy": -590.6481008944529,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-27",
+      "predicted_price": 25048.439453125,
+      "actual_price": 1114.199951171875,
+      "error": 23934.239501953125,
+      "accuracy": -2048.109904041906,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-28",
+      "predicted_price": 41504.20703125,
+      "actual_price": 1082.699951171875,
+      "error": 40421.507080078125,
+      "accuracy": -3633.3988088137767,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-29",
+      "predicted_price": 71474.0703125,
+      "actual_price": 1105.5,
+      "error": 70368.5703125,
+      "accuracy": -6265.316174807779,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-30",
+      "predicted_price": 126718.609375,
+      "actual_price": 1112.0,
+      "error": 125606.609375,
+      "accuracy": -11195.558397032375,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-10-31",
+      "predicted_price": 231101.25,
+      "actual_price": 1100.9000244140625,
+      "error": 230000.34997558594,
+      "accuracy": -20792.028783267597,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-03",
+      "predicted_price": 1197216.875,
+      "actual_price": 1095.4000244140625,
+      "error": 1196121.474975586,
+      "accuracy": -109094.94689763221,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-04",
+      "predicted_price": 2002279.0,
+      "actual_price": 1097.4000244140625,
+      "error": 2001181.599975586,
+      "accuracy": -182256.62069026122,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-05",
+      "predicted_price": 3811248.25,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-06",
+      "predicted_price": 6604960.5,
+      "actual_price": 1071.5999755859375,
+      "error": 6603888.900024414,
+      "accuracy": -616164.375744642,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-07",
+      "predicted_price": 11881456.0,
+      "actual_price": 1022.0,
+      "error": 11880434.0,
+      "accuracy": -1162369.0802348338,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-09-11",
+      "target_date": "2025-11-10",
+      "predicted_price": 76898408.0,
+      "actual_price": 1001.4000244140624,
+      "error": 76897406.59997559,
+      "accuracy": -7678889.886680867,
+      "model_info": {
+        "type": "backtest",
+        "rmse": 225.99279844644607,
+        "mae": 188.21815538307237,
+        "train_samples": 1924
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-13",
+      "predicted_price": 1176.3983154296875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-14",
+      "predicted_price": 1174.43603515625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-17",
+      "predicted_price": 1180.990478515625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-18",
+      "predicted_price": 1186.0655517578125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-19",
+      "predicted_price": 1192.4029541015625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-20",
+      "predicted_price": 1199.64697265625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-21",
+      "predicted_price": 1207.89892578125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-24",
+      "predicted_price": 1236.4063720703125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-25",
+      "predicted_price": 1247.0999755859375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-26",
+      "predicted_price": 1258.30810546875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-27",
+      "predicted_price": 1269.9100341796875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-11-28",
+      "predicted_price": 1281.75634765625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-01",
+      "predicted_price": 1320.74853515625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-02",
+      "predicted_price": 1334.8138427734375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-03",
+      "predicted_price": 1349.8375244140625,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-04",
+      "predicted_price": 1365.1885986328125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-05",
+      "predicted_price": 1381.1474609375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-08",
+      "predicted_price": 1433.8505859375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-09",
+      "predicted_price": 1453.2911376953125,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-10",
+      "predicted_price": 1474.063232421875,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-11",
+      "predicted_price": 1496.0091552734375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
+      }
+    },
+    {
+      "prediction_date": "2025-11-13",
+      "target_date": "2025-12-12",
+      "predicted_price": 1518.972412109375,
+      "actual_price": null,
+      "error": null,
+      "accuracy": null,
+      "model_info": {
+        "rmse": 213.98639650804216,
+        "mae": 178.51769072863522,
+        "train_samples": 1956
       }
     }
   ]

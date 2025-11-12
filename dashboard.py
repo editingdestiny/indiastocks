@@ -1018,7 +1018,32 @@ def render_tab_content(tab, selected_stock, timeframe):
         # Train LSTM model if available (with reduced parameters for faster training)
         lstm_results = None
         lstm_charts = None
-        if lstm_model.is_lstm_available():
+        prediction_source = "cache"  # Track if predictions came from cache or on-demand training
+        
+        # Try to load from cache first (much faster!)
+        cached_pred = pred.get_cached_prediction(selected_stock)
+        
+        if cached_pred and cached_pred.get('from_cache'):
+            # Use pre-computed predictions from cache
+            logger.info(f"Using cached predictions for {selected_stock}")
+            lstm_results = {
+                'success': True,
+                'forecast_dates': cached_pred['prediction_dates'],
+                'forecast_values': cached_pred['prediction_prices'],
+                'metrics': {
+                    'rmse': 0,  # Metrics not available in cache
+                    'mae': 0
+                },
+                'training_info': {
+                    'train_samples': 0
+                },
+                'from_cache': True
+            }
+            prediction_source = "cache"
+        elif lstm_model.is_lstm_available():
+            # Fallback to on-demand training if cache miss
+            logger.info(f"Cache miss for {selected_stock}, training LSTM on-demand")
+            prediction_source = "on-demand"
             try:
                 lstm_results = lstm_model.train_lstm_model(
                     df_with_indicators,
@@ -1101,8 +1126,40 @@ def render_tab_content(tab, selected_stock, timeframe):
                 lstm_results = {'error': 'Training failed', 'message': str(e)}
                 lstm_charts = None
         
+        # Create LSTM charts for cached predictions too
+        if lstm_results and lstm_results.get('success') and lstm_results.get('from_cache') and lstm_charts is None:
+            lstm_charts = lstm_model.create_lstm_charts(
+                df_with_indicators,
+                lstm_results,
+                selected_stock
+            )
+        
         # Build the UI
         return html.Div([
+            # Add prediction source indicator at the top
+            html.Div([
+                html.Div([
+                    html.Span("⚡ " if prediction_source == "cache" else "⏳ ", style={'fontSize': '16px'}),
+                    html.Span(
+                        "Predictions loaded from cache (instant)" if prediction_source == "cache" 
+                        else "Model trained on-demand (cache unavailable)",
+                        style={
+                            'fontSize': 'clamp(11px, 2.2vw, 13px)', 
+                            'color': '#10b981' if prediction_source == "cache" else '#f59e0b',
+                            'fontWeight': '500',
+                            'fontStyle': 'italic'
+                        }
+                    )
+                ], style={
+                    'textAlign': 'center',
+                    'padding': '8px 16px',
+                    'background': 'rgba(16, 185, 129, 0.1)' if prediction_source == "cache" else 'rgba(245, 158, 11, 0.1)',
+                    'borderRadius': '8px',
+                    'marginBottom': '20px',
+                    'border': f'1px solid {"rgba(16, 185, 129, 0.3)" if prediction_source == "cache" else "rgba(245, 158, 11, 0.3)"}'
+                })
+            ]),
+            
             # Trading Signals Section
             html.Div([
                 html.H3("📊 Trading Signals", style={

@@ -5,9 +5,92 @@ Provides technical indicators, forecasting, and trading signals
 
 import pandas as pd
 import numpy as np
-from datetime import timedelta
+from datetime import timedelta, datetime
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import os
+import logging
+
+logger = logging.getLogger(__name__)
+
+# Cache for predictions
+_predictions_cache = None
+_cache_loaded_at = None
+PREDICTIONS_FILE = "/app/predictions_cache.csv"
+
+
+def load_predictions_cache():
+    """Load pre-computed predictions from cache file."""
+    global _predictions_cache, _cache_loaded_at
+    
+    # Check if file exists
+    if not os.path.exists(PREDICTIONS_FILE):
+        logger.warning(f"Predictions cache file not found: {PREDICTIONS_FILE}")
+        return None
+    
+    # Check if we need to reload (file modified or cache empty)
+    try:
+        file_mtime = os.path.getmtime(PREDICTIONS_FILE)
+        if _predictions_cache is not None and _cache_loaded_at is not None:
+            if file_mtime <= _cache_loaded_at:
+                logger.info("Using cached predictions from memory")
+                return _predictions_cache
+        
+        # Load from file
+        logger.info(f"Loading predictions from {PREDICTIONS_FILE}")
+        df = pd.read_csv(PREDICTIONS_FILE)
+        _predictions_cache = df
+        _cache_loaded_at = file_mtime
+        logger.info(f"Loaded {len(df)} predictions")
+        return df
+    except Exception as e:
+        logger.error(f"Error loading predictions cache: {e}")
+        return None
+
+
+def get_cached_prediction(ticker):
+    """
+    Get pre-computed prediction for a stock from cache.
+    
+    Args:
+        ticker: Stock ticker symbol
+    
+    Returns:
+        Dictionary with prediction data or None if not found
+    """
+    df = load_predictions_cache()
+    if df is None:
+        return None
+    
+    # Find ticker in cache
+    stock_pred = df[df['ticker'] == ticker]
+    if stock_pred.empty:
+        logger.warning(f"No cached prediction found for {ticker}")
+        return None
+    
+    row = stock_pred.iloc[0]
+    
+    # Parse dates and prices
+    try:
+        prediction_dates = [datetime.strptime(d, '%Y-%m-%d') for d in row['prediction_dates'].split(',')]
+        prediction_prices = [float(p) for p in row['prediction_prices'].split(',')]
+        
+        return {
+            'ticker': ticker,
+            'last_date': datetime.strptime(row['last_date'], '%Y-%m-%d'),
+            'last_price': float(row['last_price']),
+            'predicted_price_30d': float(row['predicted_price_30d']) if pd.notna(row['predicted_price_30d']) else None,
+            'predicted_price_60d': float(row['predicted_price_60d']) if pd.notna(row['predicted_price_60d']) else None,
+            'predicted_price_90d': float(row['predicted_price_90d']),
+            'predicted_change_pct': float(row['predicted_change_pct']),
+            'prediction_dates': prediction_dates,
+            'prediction_prices': prediction_prices,
+            'generated_at': row['generated_at'],
+            'from_cache': True
+        }
+    except Exception as e:
+        logger.error(f"Error parsing cached prediction for {ticker}: {e}")
+        return None
 
 
 def calculate_moving_averages(df, periods=[20, 50, 200]):

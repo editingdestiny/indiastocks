@@ -17,8 +17,12 @@ COPY dashboard.py /app/dashboard.py
 COPY predictive_analysis.py /app/predictive_analysis.py
 COPY lstm_model.py /app/lstm_model.py
 COPY backtesting.py /app/backtesting.py
+COPY fundamentals.py /app/fundamentals.py
+COPY prediction_tracker.py /app/prediction_tracker.py
 COPY start_services.sh /app/start_services.sh
 COPY update_daily.py /app/update_daily.py
+COPY update_fundamentals.py /app/update_fundamentals.py
+COPY generate_predictions.py /app/generate_predictions.py
 
 # Set permissions
 RUN chmod 0644 /etc/cron.d/update_daily && \
