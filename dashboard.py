@@ -416,6 +416,28 @@ app.layout = html.Div([
                 'boxShadow': '0 -2px 8px rgba(102, 126, 234, 0.3)'
             }
         ),
+        dcc.Tab(
+            label='🎯 Prediction Tracking', 
+            value='tab-prediction-tracking', 
+            style={
+                'padding': '12px 24px', 
+                'fontWeight': '600',
+                'fontSize': 'clamp(13px, 3vw, 16px)',
+                'borderRadius': '8px 8px 0 0',
+                'backgroundColor': '#f8f9fa',
+                'border': 'none'
+            }, 
+            selected_style={
+                'padding': '12px 24px', 
+                'fontWeight': '700',
+                'fontSize': 'clamp(13px, 3vw, 16px)',
+                'borderRadius': '8px 8px 0 0',
+                'background': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'color': 'white',
+                'border': 'none',
+                'boxShadow': '0 -2px 8px rgba(102, 126, 234, 0.3)'
+            }
+        ),
     ], style={
         'maxWidth': '1200px', 
         'marginLeft': 'auto', 
@@ -1955,6 +1977,210 @@ def render_tab_content(tab, selected_stock, timeframe):
             'marginTop': '20px'
         })
     
+    elif tab == 'tab-prediction-tracking':
+        # Prediction Tracking tab
+        from prediction_tracker import prediction_tracker
+        
+        if not selected_stock:
+            return html.Div([
+                html.Div("🎯", style={'fontSize': '60px', 'textAlign': 'center', 'marginBottom': '20px'}),
+                html.H3("Prediction Accuracy Tracking", style={
+                    'textAlign': 'center', 
+                    'marginBottom': '15px', 
+                    'fontSize': 'clamp(18px, 4vw, 26px)', 
+                    'color': '#667eea',
+                    'fontWeight': '700'
+                }),
+                html.P("Please select a stock above to view prediction accuracy tracking", style={
+                    'textAlign': 'center', 
+                    'fontSize': 'clamp(14px, 3vw, 18px)', 
+                    'color': '#718096'
+                }),
+                html.Div([
+                    html.H4("📊 How it works:", style={'color': '#667eea', 'marginBottom': '15px'}),
+                    html.Ul([
+                        html.Li("Every night at midnight, the model generates predictions for Oct 1, 2025 onwards"),
+                        html.Li("Each day's predictions are stored with timestamps"),
+                        html.Li("As actual prices become available, accuracy is calculated"),
+                        html.Li("Track how predictions improve as we get closer to the target date"),
+                    ], style={'fontSize': '16px', 'lineHeight': '1.8', 'color': '#718096'})
+                ], style={
+                    'maxWidth': '600px',
+                    'margin': '30px auto',
+                    'padding': '25px',
+                    'background': '#f8f9fa',
+                    'borderRadius': '10px',
+                    'border': '1px solid #e2e8f0'
+                })
+            ], style={
+                'maxWidth': '900px', 
+                'marginLeft': 'auto', 
+                'marginRight': 'auto',
+                'margin': '40px auto',
+                'padding': '50px 40px',
+                'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                'borderRadius': '15px',
+                'boxShadow': '0 10px 30px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1)',
+                'border': '1px solid rgba(102, 126, 234, 0.15)'
+            })
+        
+        # Get prediction history for selected stock
+        pred_history = prediction_tracker.get_prediction_history(selected_stock, days=90)
+        accuracy_metrics = prediction_tracker.get_accuracy_metrics(selected_stock, days=90)
+        
+        if pred_history.empty:
+            return html.Div([
+                html.Div("📭", style={'fontSize': '60px', 'textAlign': 'center', 'marginBottom': '20px'}),
+                html.H3(f"No predictions yet for {selected_stock}", style={
+                    'textAlign': 'center', 
+                    'marginBottom': '15px', 
+                    'fontSize': 'clamp(18px, 4vw, 26px)', 
+                    'color': '#667eea',
+                    'fontWeight': '700'
+                }),
+                html.P("Predictions will appear here after the nightly generation runs", style={
+                    'textAlign': 'center', 
+                    'fontSize': 'clamp(14px, 3vw, 18px)', 
+                    'color': '#718096'
+                })
+            ], style={
+                'maxWidth': '900px', 
+                'marginLeft': 'auto', 
+                'marginRight': 'auto',
+                'margin': '40px auto',
+                'padding': '50px 40px',
+                'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                'borderRadius': '15px',
+                'boxShadow': '0 10px 30px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1)',
+                'border': '1px solid rgba(102, 126, 234, 0.15)'
+            })
+        
+        # Create accuracy metrics cards
+        metrics_cards = html.Div([
+            html.Div([
+                html.Div("📊", style={'fontSize': '30px', 'marginBottom': '10px'}),
+                html.Div(f"{accuracy_metrics['verified_predictions']}", style={
+                    'fontSize': '32px', 'fontWeight': 'bold', 'color': '#667eea'
+                }),
+                html.Div("Verified Predictions", style={'fontSize': '14px', 'color': '#718096'})
+            ], style={
+                'flex': '1',
+                'padding': '20px',
+                'background': 'white',
+                'borderRadius': '10px',
+                'boxShadow': '0 2px 8px rgba(0,0,0,0.1)',
+                'textAlign': 'center'
+            }),
+            html.Div([
+                html.Div("🎯", style={'fontSize': '30px', 'marginBottom': '10px'}),
+                html.Div(f"{accuracy_metrics['mean_accuracy']:.2f}%", style={
+                    'fontSize': '32px', 'fontWeight': 'bold', 'color': '#10b981'
+                }),
+                html.Div("Mean Accuracy", style={'fontSize': '14px', 'color': '#718096'})
+            ], style={
+                'flex': '1',
+                'padding': '20px',
+                'background': 'white',
+                'borderRadius': '10px',
+                'boxShadow': '0 2px 8px rgba(0,0,0,0.1)',
+                'textAlign': 'center'
+            }),
+            html.Div([
+                html.Div("💰", style={'fontSize': '30px', 'marginBottom': '10px'}),
+                html.Div(f"₹{accuracy_metrics['mae']:.2f}", style={
+                    'fontSize': '32px', 'fontWeight': 'bold', 'color': '#f59e0b'
+                }),
+                html.Div("Mean Error (MAE)", style={'fontSize': '14px', 'color': '#718096'})
+            ], style={
+                'flex': '1',
+                'padding': '20px',
+                'background': 'white',
+                'borderRadius': '10px',
+                'boxShadow': '0 2px 8px rgba(0,0,0,0.1)',
+                'textAlign': 'center'
+            })
+        ], style={
+            'display': 'flex',
+            'gap': '20px',
+            'marginBottom': '30px',
+            'flexWrap': 'wrap'
+        })
+        
+        # Create prediction history table
+        table_data = pred_history[['target_date', 'prediction_date', 'predicted_price', 'actual_price', 'accuracy']].copy()
+        table_data['target_date'] = table_data['target_date'].dt.strftime('%Y-%m-%d')
+        table_data['prediction_date'] = table_data['prediction_date'].dt.strftime('%Y-%m-%d')
+        table_data['predicted_price'] = table_data['predicted_price'].apply(lambda x: f"₹{x:.2f}")
+        table_data['actual_price'] = table_data['actual_price'].apply(
+            lambda x: f"₹{x:.2f}" if pd.notna(x) else "Pending"
+        )
+        table_data['accuracy'] = table_data['accuracy'].apply(
+            lambda x: f"{x:.2f}%" if pd.notna(x) else "-"
+        )
+        
+        table = html.Table([
+            html.Thead(html.Tr([
+                html.Th("Target Date", style={'padding': '12px', 'textAlign': 'left', 'borderBottom': '2px solid #667eea', 'color': '#667eea', 'fontWeight': '700'}),
+                html.Th("Predicted On", style={'padding': '12px', 'textAlign': 'left', 'borderBottom': '2px solid #667eea', 'color': '#667eea', 'fontWeight': '700'}),
+                html.Th("Predicted Price", style={'padding': '12px', 'textAlign': 'right', 'borderBottom': '2px solid #667eea', 'color': '#667eea', 'fontWeight': '700'}),
+                html.Th("Actual Price", style={'padding': '12px', 'textAlign': 'right', 'borderBottom': '2px solid #667eea', 'color': '#667eea', 'fontWeight': '700'}),
+                html.Th("Accuracy", style={'padding': '12px', 'textAlign': 'right', 'borderBottom': '2px solid #667eea', 'color': '#667eea', 'fontWeight': '700'})
+            ])),
+            html.Tbody([
+                html.Tr([
+                    html.Td(row['target_date'], style={'padding': '12px', 'borderBottom': '1px solid #e2e8f0'}),
+                    html.Td(row['prediction_date'], style={'padding': '12px', 'borderBottom': '1px solid #e2e8f0'}),
+                    html.Td(row['predicted_price'], style={'padding': '12px', 'textAlign': 'right', 'borderBottom': '1px solid #e2e8f0'}),
+                    html.Td(row['actual_price'], style={'padding': '12px', 'textAlign': 'right', 'borderBottom': '1px solid #e2e8f0'}),
+                    html.Td(row['accuracy'], style={
+                        'padding': '12px', 
+                        'textAlign': 'right', 
+                        'borderBottom': '1px solid #e2e8f0',
+                        'color': '#10b981' if row['accuracy'] != '-' and float(row['accuracy'].rstrip('%')) >= 90 else '#f59e0b' if row['accuracy'] != '-' else '#718096',
+                        'fontWeight': '600'
+                    })
+                ]) for _, row in table_data.iterrows()
+            ])
+        ], style={
+            'width': '100%',
+            'borderCollapse': 'collapse',
+            'background': 'white',
+            'borderRadius': '10px',
+            'overflow': 'hidden',
+            'boxShadow': '0 2px 8px rgba(0,0,0,0.1)'
+        })
+        
+        return html.Div([
+            html.H2(f"🎯 {selected_stock} - Prediction Accuracy Tracking", style={
+                'textAlign': 'center',
+                'color': '#667eea',
+                'fontSize': 'clamp(20px, 4.5vw, 28px)',
+                'fontWeight': '700',
+                'marginBottom': '30px'
+            }),
+            metrics_cards,
+            html.Div([
+                html.H3("📋 Prediction History", style={
+                    'color': '#667eea',
+                    'fontSize': '20px',
+                    'fontWeight': '700',
+                    'marginBottom': '20px'
+                }),
+                table
+            ], style={
+                'padding': '20px',
+                'background': 'white',
+                'borderRadius': '10px',
+                'boxShadow': '0 2px 8px rgba(0,0,0,0.1)'
+            })
+        ], style={
+            'maxWidth': '1200px',
+            'marginLeft': 'auto',
+            'marginRight': 'auto',
+            'marginTop': '20px',
+            'padding': '30px 20px'
+        })
+    
     # No data case
     return html.Div("No data available", style={"textAlign": "center", "padding": "20px"})
 
@@ -1976,8 +2202,8 @@ def update_latest_date(tab):
     Input('tabs', 'value')
 )
 def toggle_timeframe_visibility(tab):
-    """Hide timeframe selector on Predictive Analysis, Backtesting, and Fundamentals tabs, show on Price Analysis tab."""
-    if tab in ['tab-prediction', 'tab-backtesting', 'tab-fundamentals']:
+    """Hide timeframe selector on Predictive Analysis, Backtesting, Fundamentals, and Prediction Tracking tabs, show on Price Analysis tab."""
+    if tab in ['tab-prediction', 'tab-backtesting', 'tab-fundamentals', 'tab-prediction-tracking']:
         return {'display': 'none'}
     else:
         return {'width': '15%', 'display': 'block'}
