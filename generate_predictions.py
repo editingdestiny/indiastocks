@@ -107,7 +107,7 @@ def generate_prediction_for_stock(stock_df, ticker):
             stock_df,
             seq_length=60,
             forecast_days=PREDICTION_DAYS,
-            epochs=50,
+            epochs=20,  # Reduced from 50 to 20 for faster generation
             batch_size=32
         )
         
