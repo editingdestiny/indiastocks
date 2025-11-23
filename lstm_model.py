@@ -267,41 +267,42 @@ def create_lstm_charts(df, lstm_results, ticker):
     
     charts['lstm_forecast'] = fig_forecast
     
-    # 2. Model Performance Chart (Test Set)
-    fig_performance = go.Figure()
-    
-    fig_performance.add_trace(go.Scatter(
-        x=lstm_results['test_dates'],
-        y=lstm_results['test_actual'],
-        mode='lines',
-        name='Actual Price',
-        line=dict(color='#667eea', width=2)
-    ))
-    
-    fig_performance.add_trace(go.Scatter(
-        x=lstm_results['test_dates'],
-        y=lstm_results['test_predictions'],
-        mode='lines',
-        name='LSTM Predictions',
-        line=dict(color='#ef4444', width=2, dash='dot')
-    ))
-    
-    fig_performance.update_layout(
-        title={
-            'text': f'{ticker} - LSTM Model Performance on Test Data',
-            'font': {'size': 18, 'color': '#2d3748'}
-        },
-        xaxis_title='Date',
-        yaxis_title='Price (₹)',
-        template='plotly_white',
-        hovermode='x unified',
-        plot_bgcolor='rgba(248, 249, 250, 0.8)',
-        paper_bgcolor='white',
-        font={'color': '#4a5568'},
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
-    )
-    
-    charts['lstm_performance'] = fig_performance
+    # 2. Model Performance Chart (Test Set) - only if test data is available
+    if 'test_dates' in lstm_results and 'test_actual' in lstm_results and 'test_predictions' in lstm_results:
+        fig_performance = go.Figure()
+        
+        fig_performance.add_trace(go.Scatter(
+            x=lstm_results['test_dates'],
+            y=lstm_results['test_actual'],
+            mode='lines',
+            name='Actual Price',
+            line=dict(color='#667eea', width=2)
+        ))
+        
+        fig_performance.add_trace(go.Scatter(
+            x=lstm_results['test_dates'],
+            y=lstm_results['test_predictions'],
+            mode='lines',
+            name='LSTM Predictions',
+            line=dict(color='#ef4444', width=2, dash='dot')
+        ))
+        
+        fig_performance.update_layout(
+            title={
+                'text': f'{ticker} - LSTM Model Performance on Test Data',
+                'font': {'size': 18, 'color': '#2d3748'}
+            },
+            xaxis_title='Date',
+            yaxis_title='Price (₹)',
+            template='plotly_white',
+            hovermode='x unified',
+            plot_bgcolor='rgba(248, 249, 250, 0.8)',
+            paper_bgcolor='white',
+            font={'color': '#4a5568'},
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+        )
+        
+        charts['lstm_performance'] = fig_performance
     
     return charts
 

@@ -76,6 +76,7 @@ def get_cached_prediction(ticker):
         prediction_prices = [float(p) for p in row['prediction_prices'].split(',')]
         
         return {
+            'success': True,
             'ticker': ticker,
             'last_date': datetime.strptime(row['last_date'], '%Y-%m-%d'),
             'last_price': float(row['last_price']),
@@ -85,6 +86,8 @@ def get_cached_prediction(ticker):
             'predicted_change_pct': float(row['predicted_change_pct']),
             'prediction_dates': prediction_dates,
             'prediction_prices': prediction_prices,
+            'forecast_dates': prediction_dates,  # Alias for chart compatibility
+            'forecast_values': prediction_prices,  # Alias for chart compatibility
             'generated_at': row['generated_at'],
             'from_cache': True
         }
