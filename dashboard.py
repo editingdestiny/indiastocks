@@ -37,8 +37,12 @@ app.index_string = '''
         {%metas%}
         <title>{%title%}</title>
         {%favicon%}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
         {%css%}
         <style>
+            body { font-family: "Inter", sans-serif !important; }
             @media (max-width: 768px) {
                 .top-charts {
                     flex-direction: column !important;
@@ -2362,8 +2366,12 @@ if __name__ == '__main__':
             {%metas%}
             <title>{%title%}</title>
             {%favicon%}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
             {%css%}
             <style>
+            body { font-family: "Inter", sans-serif !important; }
                 /* Mobile responsive styles */
                 @media (max-width: 768px) {
                     .chart-half {
