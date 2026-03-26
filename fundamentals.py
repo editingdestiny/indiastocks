@@ -212,7 +212,7 @@ def get_top_bottom_fundamentals(n=10):
     top_stocks = scored.head(n)
     bottom_stocks = scored.tail(n)
 
-    _rankings_cache[key] = (now, (top_stocks, bottom_stocks)))
+    _rankings_cache[key] = (now, (top_stocks, bottom_stocks))
     return top_stocks, bottom_stocks
 
 
