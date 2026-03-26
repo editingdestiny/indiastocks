@@ -47,6 +47,15 @@ app.index_string = '''
                     width: 100% !important;
                     min-width: 100% !important;
                 }
+                .mobile-full-width {
+                    width: 100% !important;
+                    margin-right: 0 !important;
+                    margin-bottom: 10px;
+                }
+                /* Make dropdowns touch-friendly */
+                .Select-control {
+                    min-height: 44px !important;
+                }
             }
             @media (min-width: 769px) {
                 .top-charts {
@@ -56,6 +65,13 @@ app.index_string = '''
                 .chart-half {
                     width: 48% !important;
                     flex: 1 1 48% !important;
+                }
+                .mobile-full-width {
+                    width: auto !important;
+                    flex: 1 1 auto !important;
+                }
+                #timeframe-container {
+                    flex: 0 0 180px !important;
                 }
             }
             @keyframes pulse {
@@ -309,7 +325,7 @@ app.layout = html.Div([
                     'borderRadius': '8px'
                 }
             ),
-        ], style={'width': '15%'}, className='mobile-full-width'),
+        ], className='mobile-full-width'),
     ], style={
         'maxWidth': '1200px', 
         'marginLeft': 'auto', 
@@ -2205,7 +2221,7 @@ def toggle_timeframe_visibility(tab):
     if tab in ['tab-prediction', 'tab-backtesting', 'tab-fundamentals', 'tab-prediction-tracking']:
         return {'display': 'none'}
     else:
-        return {'width': '15%', 'display': 'block'}
+        return {'display': 'block'}
 
 
 # Callback for top performers table (outside tabs, always visible)
