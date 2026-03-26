@@ -464,6 +464,17 @@ app.layout = html.Div([
         'marginBottom': '0'
     }),
     
+    
+    # Rankings cache store (populated once per Fundamentals tab visit)
+    dcc.Store(id='fund-rankings-store', data={'rankings': None}),
+    
+    # Rankings section container (populated by dedicated callback)
+    html.Div(
+        id='fund-rankings-container',
+        style={'display': 'none'},
+        children=[]
+    ),
+    
     # Tab content with loading spinner positioned near tabs
     dcc.Loading(
         id="loading-tab-content",
