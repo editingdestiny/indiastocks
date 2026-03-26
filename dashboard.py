@@ -3,7 +3,7 @@ from dash import html, dcc
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from pathlib import Path
 import logging
 import time
@@ -469,7 +469,7 @@ app.layout = html.Div([
         id="loading-tab-content",
         type="dot",
         color="#667eea",
-        fullscreen=True,
+        fullscreen=False,
         style={'minHeight': '200px'},
         children=html.Div(id='tabs-content', style={'width': '100%'})
     ),
@@ -1909,52 +1909,29 @@ def render_tab_content(tab, selected_stock, timeframe):
             ])
 
     elif tab == 'tab-fundamentals':
-        # Fundamentals tab
-        
-        # Create top/bottom tables section
-        tables_section = html.Div([
-            html.Div([
-                html.H2("📈 Fundamental Rankings", style={
-                    'textAlign': 'center',
-                    'color': '#667eea',
-                    'fontSize': 'clamp(20px, 4.5vw, 28px)',
-                    'fontWeight': '700',
-                    'marginBottom': '30px'
-                }),
-                fundamentals.create_top_bottom_tables()
-            ], style={
-                'maxWidth': '1400px',
-                'marginLeft': 'auto',
-                'marginRight': 'auto',
-                'padding': '30px 20px',
-                'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
-                'borderRadius': '15px',
-                'boxShadow': '0 10px 30px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1)',
-                'border': '1px solid rgba(102, 126, 234, 0.15)',
-                'marginBottom': '30px'
-            })
-        ])
+        # Rankings are loaded via load_fundamentals_rankings callback, shown via fund-rankings-container
+        # Individual stock data is fetched here (cached per stock, 1 hour TTL)
         
         if not selected_stock:
             return html.Div([
-                tables_section,
+                html.Div(id='fund-rankings-container'),
                 html.Div([
                     html.Div("💼", style={'fontSize': '60px', 'textAlign': 'center', 'marginBottom': '20px'}),
                     html.H3("Individual Stock Analysis", style={
-                        'textAlign': 'center', 
-                        'marginBottom': '15px', 
-                        'fontSize': 'clamp(18px, 4vw, 26px)', 
+                        'textAlign': 'center',
+                        'marginBottom': '15px',
+                        'fontSize': 'clamp(18px, 4vw, 26px)',
                         'color': '#667eea',
                         'fontWeight': '700'
                     }),
                     html.P("Please select a stock above to view detailed fundamental analysis", style={
-                        'textAlign': 'center', 
-                        'fontSize': 'clamp(14px, 3vw, 18px)', 
+                        'textAlign': 'center',
+                        'fontSize': 'clamp(14px, 3vw, 18px)',
                         'color': '#718096'
                     })
                 ], style={
-                    'maxWidth': '900px', 
-                    'marginLeft': 'auto', 
+                    'maxWidth': '900px',
+                    'marginLeft': 'auto',
                     'marginRight': 'auto',
                     'margin': '40px auto',
                     'padding': '50px 40px',
@@ -1963,13 +1940,17 @@ def render_tab_content(tab, selected_stock, timeframe):
                     'boxShadow': '0 10px 30px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1)',
                     'border': '1px solid rgba(102, 126, 234, 0.15)'
                 })
-            ])
+            ], style={
+                'maxWidth': '1400px',
+                'marginLeft': 'auto',
+                'marginRight': 'auto',
+                'marginTop': '20px'
+            })
         
-        # Fetch fundamental data
         fundamental_data = fundamentals.get_fundamental_data(selected_stock)
         
         return html.Div([
-            tables_section,
+            html.Div(id='fund-rankings-container'),
             html.Div([
                 html.H2(f"📊 {selected_stock} - Detailed Analysis", style={
                     'textAlign': 'center',
@@ -2202,6 +2183,58 @@ def render_tab_content(tab, selected_stock, timeframe):
     
     # No data case
     return html.Div("No data available", style={"textAlign": "center", "padding": "20px"})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Dedicated callback: loads rankings ONLY when Fundamentals tab is first selected
+# The store acts as a latch — once 'rankings' key is set, it won't re-fetch
+# unless the store is cleared (e.g. container restart).
+# ─────────────────────────────────────────────────────────────────────────────
+@app.callback(
+    [Output('fund-rankings-container', 'children'),
+     Output('fund-rankings-container', 'style'),
+     Output('fund-rankings-store', 'data')],
+    [Input('tabs', 'value')],
+    [State('fund-rankings-store', 'data')]
+)
+def load_fundamentals_rankings(tab, store_data):
+    """
+    Fire only when the Fundamentals tab is selected.
+    Rankings are cached in the store so they don't re-fetch on every tab visit.
+    """
+    if tab != 'tab-fundamentals':
+        return [], {'display': 'none'}, dash.no_update
+
+    cached = (store_data or {}).get('rankings')
+    if cached is not None:
+        # Already loaded — serve from cache, just show container
+        return cached, {'display': 'block', 'maxWidth': '1400px', 'marginLeft': 'auto', 'marginRight': 'auto'}, dash.no_update
+
+    # Fetch rankings (this is the slow part — ~5-10s)
+    tables_section = html.Div([
+        html.Div([
+            html.H2("📈 Fundamental Rankings", style={
+                'textAlign': 'center',
+                'color': '#667eea',
+                'fontSize': 'clamp(20px, 4.5vw, 28px)',
+                'fontWeight': '700',
+                'marginBottom': '30px'
+            }),
+            fundamentals.create_top_bottom_tables()
+        ], style={
+            'maxWidth': '1400px',
+            'marginLeft': 'auto',
+            'marginRight': 'auto',
+            'padding': '30px 20px',
+            'background': 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+            'borderRadius': '15px',
+            'boxShadow': '0 10px 30px rgba(102, 126, 234, 0.2), 0 4px 8px rgba(0,0,0,0.1)',
+            'border': '1px solid rgba(102, 126, 234, 0.15)',
+            'marginBottom': '30px'
+        })
+    ])
+
+    return [tables_section], {'display': 'block', 'maxWidth': '1400px', 'marginLeft': 'auto', 'marginRight': 'auto'}, {'rankings': [tables_section]}
 
 
 # Callback to update the latest data date display
