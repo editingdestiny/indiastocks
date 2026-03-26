@@ -20,8 +20,7 @@ logger = logging.getLogger(__name__)
 
 # Initialize the Dash app
 app = dash.Dash(__name__, 
-                requests_pathname_prefix='/indiastock/',
-                routes_pathname_prefix='/indiastock/',
+                url_base_pathname='/indiastock/',
                 serve_locally=True,
                 suppress_callback_exceptions=True,
                 meta_tags=[

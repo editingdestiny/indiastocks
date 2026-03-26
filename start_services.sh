@@ -7,6 +7,9 @@ mkdir -p /app/logs /app/backups
 crontab /etc/cron.d/update_daily
 service cron start
 
-# Start services
+# Start Dash in the background
 cd /app
-python dashboard.py
+python dashboard.py >> /app/logs/dashboard.log 2>&1 &
+
+# Keep the container running
+wait
